@@ -97,5 +97,50 @@
       </a>
     </div>
   </div>
+  <script>
+    // Nhận thông báo từ register.html
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('registered') && urlParams.get('registered') === 'true') {
+      document.getElementById('success-msg').style.display = 'block';
+      const email = urlParams.get('email');
+      if (email) document.getElementById('email').value = email;
+    }
+    function togglePassword() {
+      const pw = document.getElementById('password');
+      const icon = document.getElementById('toggle-pw');
+      if (pw.type === 'password') {
+        pw.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        pw.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+    function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      let hasError = false;
+      document.querySelectorAll('.error').forEach(e => e.style.display = 'none');
+      if (!email) {
+        document.getElementById('email-error').textContent = 'Vui lòng nhập email';
+        document.getElementById('email-error').style.display = 'block';
+        hasError = true;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('email-error').textContent = 'Email không hợp lệ';
+        document.getElementById('email-error').style.display = 'block';
+        hasError = true;
+      }
+      if (!password) {
+        document.getElementById('password-error').style.display = 'block';
+        hasError = true;
+      }
+      if (!hasError) {
+        alert(`✅ Đăng nhập thành công!\nChào mừng bạn: ${email}`);
+      }
+    }
+  </script>
 </body>
+
 </html>

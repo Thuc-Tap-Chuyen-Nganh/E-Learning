@@ -26,8 +26,8 @@ body {
   text-align: center;
   padding: 30px 20px;
 }
-.header h1 { font-size: 28px; margin-bottom: 8px; }
-.header p { opacity: 0.9; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 15px; }
 .form { padding: 30px; }
 .form-group { margin-bottom: 20px; }
 .form-group label {
@@ -54,25 +54,11 @@ body {
   );
   color: white;
   border: none;
-  margin-top: 20px;
   border-radius: 10px;
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
 }
-.register-link {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 15px;
-  color: #555;
-}
-.link {
-  color: #2575fc;
-  text-decoration: none;
-  font-weight: 600;
-  margin: 0 6px;
-}
-.link:hover{ text-decoration: underline; }
 .back-link {
   display: inline-block;
   margin-top: 20px;

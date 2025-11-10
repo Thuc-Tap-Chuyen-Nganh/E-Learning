@@ -6,67 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quên mật khẩu | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body {
-      background: linear-gradient(135deg, #8e2de2, #4a00e0);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-      overflow: hidden;
-    }
-    .header {
-      background: #2575fc;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-    }
-    .header h1 { font-size: 24px; margin-bottom: 8px; }
-    .header p { opacity: 0.9; font-size: 15px; }
-    .form { padding: 30px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #333;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background: #2575fc;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .back-link {
-      display: inline-block;
-      margin-top: 20px;
-      color: #555;
-      text-decoration: none;
-      font-size: 15px;
-    }
-    .back-link:hover { text-decoration: underline; }
-  </style>
+  <link rel="stylesheet" href="public/css/forgot.css">
 </head>
 <body>
   <div class="card">
@@ -80,7 +20,7 @@
         <input type="email" id="email" placeholder="example@elearning.com" />
       </div>
       <button class="btn">Gửi hướng dẫn</button>
-      <a href="login.html" class="back-link">
+      <a href="login.php" class="back-link">
         <i class="fas fa-arrow-left"></i> Quay lại đăng nhập
       </a>
     </div>

@@ -1,98 +1,40 @@
-<!-- index.html -->
+<!-- register.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Đăng nhập | E-Learning</title>
+  <title>Đăng ký | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-      overflow: hidden;
-    }
-    .header {
-      background: #2575fc;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-    }
-    .header h1 { font-size: 28px; margin-bottom: 8px; }
-    .header p { opacity: 0.9; }
-    .form { padding: 30px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #333;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background: #2575fc;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .links {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 15px;
-      color: #555;
-    }
-    .links a {
-      color: #2575fc;
-      text-decoration: none;
-      font-weight: 600;
-      margin: 0 6px;
-    }
-    .links a:hover { text-decoration: underline; }
-  </style>
+  <link rel="stylesheet" href="public/css/register.css">
 </head>
 <body>
   <div class="card">
     <div class="header">
-      <h1><i class="fas fa-user-graduate"></i> Đăng nhập</h1>
-      <p>Vào hệ thống E-Learning để học lập trình</p>
+      <h1><i class="fas fa-user-plus"></i> Đăng ký</h1>
+      <p>Tạo tài khoản để bắt đầu học lập trình</p>
     </div>
     <div class="form">
+      <div class="form-group">
+        <label for="name">Họ và tên</label>
+        <input type="text" id="name" placeholder="Nguyễn Văn A" />
+      </div>
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="example@elearning.com" />
       </div>
       <div class="form-group">
         <label for="password">Mật khẩu</label>
-        <input type="password" id="password" placeholder="••••••••" />
+        <input type="password" id="password" placeholder="Tối thiểu 6 ký tự" />
       </div>
-      <button class="btn">Đăng nhập</button>
-      <div class="links">
-        Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a> •
-        <a href="forgot.html">Quên mật khẩu?</a>
+      <div class="form-group">
+        <label for="confirm">Nhập lại mật khẩu</label>
+        <input type="password" id="confirm" placeholder="Nhập lại mật khẩu" />
       </div>
+      <button class="btn">Tạo tài khoản</button>
+      <a href="index.php" class="back-link">
+        <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+      </a>
     </div>
   </div>
   <script>
@@ -140,6 +82,5 @@
     }
   </script>
 </body>
+
 </html>
-
-

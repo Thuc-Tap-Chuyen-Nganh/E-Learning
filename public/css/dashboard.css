@@ -1,0 +1,413 @@
+/* --- Reset & Globals --- */
+:root {
+    /* --- Màu sắc nhất quán từ style.css --- */
+    --primary-color: #8e2de2; 
+    --primary-gradient: linear-gradient(
+                          90deg,
+                          #8e2de2 0%, 
+                          #4a00e0 40%, 
+                          #0099f7 100%
+                        );
+    --primary-light: #E6E6FA;
+    --dark-blue: #0F0A28;
+    --text-dark: #333;
+    --text-light: #555;
+    --white: #ffffff;
+    --border-light: #f0f0f0;
+    --background-light: #f8f9fa; /* Nền cho nội dung chính */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- Nút chung (từ style.css) --- */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-align: center;
+}
+
+
+/* --- Sidebar (Thanh bên trái) --- */
+.sidebar {
+    width: 260px;
+    background: var(--white);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar-header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+.sidebar-header .logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.sidebar-header .logo i {
+    margin-right: 8px;
+}
+.sidebar-header .logo-subtext {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-left: 35px; /* Căn chỉnh với chữ EduTech */
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.user-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+.user-email {
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.sidebar-nav {
+    flex-grow: 1; /* Đẩy footer xuống dưới */
+    margin-top: 20px;
+}
+.sidebar-nav ul {
+    list-style: none;
+}
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 14px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+.sidebar-nav a:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
+.sidebar-nav a.active {
+    background: var(--primary-gradient);
+    color: var(--white);
+}
+.sidebar-nav a i {
+    width: 20px;
+    margin-right: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+}
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+.sidebar-footer a:hover {
+    color: #e63946; /* Màu đỏ cho đăng xuất */
+}
+.sidebar-footer a i {
+    width: 20px;
+    margin-right: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+/* --- Main Content (Nội dung chính) --- */
+.main-content {
+    margin-left: 260px; /* Bằng chiều rộng sidebar */
+    width: calc(100% - 260px);
+    padding: 25px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.header-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+.header-controls {
+    display: flex;
+    gap: 15px;
+}
+.header-controls .btn-ai {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.header-controls .btn-share {
+    background: var(--primary-gradient);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* --- Overview Stats --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.stat-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.stat-card .icon-wrapper {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+.stat-card .icon-blue { background: #0099f7; }
+.stat-card .icon-purple { background: #8e2de2; }
+.stat-card .icon-green { background: #198754; }
+.stat-card .icon-orange { background: #fd7e14; }
+
+.stat-card h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+.stat-card .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+/* --- My Courses --- */
+.my-courses {
+    margin-top: 30px;
+}
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.course-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.course-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.card-content {
+    padding: 20px;
+}
+.card-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 5px;
+}
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.progress-bar .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--primary-gradient);
+}
+.lesson-count {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+.btn-continue {
+    width: 100%;
+    background: var(--primary-gradient);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-continue:hover {
+    opacity: 0.9;
+}
+
+/* --- Recent Activity --- */
+.recent-activity {
+    margin-top: 30px;
+}
+.activity-list {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.activity-item:last-child {
+    border-bottom: none;
+}
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+    color: var(--white);
+    margin-right: 15px;
+}
+.activity-icon.icon-green { background: #198754; }
+.activity-icon.icon-blue { background: #0099f7; }
+.activity-icon.icon-purple { background: #8e2de2; }
+
+.activity-details p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.activity-details .course-name {
+    font-size: 14px;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-right: 10px;
+}
+.activity-details .timestamp {
+    font-size: 14px;
+    color: #999;
+}
+
+
+/* --- Responsive (Đơn giản) --- */
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    /* Ẩn sidebar trên thiết bị nhỏ */
+    .sidebar {
+        display: none;
+    }
+    /* Nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}

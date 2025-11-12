@@ -87,7 +87,7 @@
     $stmt->close();
 
     // Thông báo thành công
-    header("refresh:3;url=index.php"); // Chuyển về trang đăng nhập
+    header("refresh:3;url=login.php"); // Chuyển về trang đăng nhập
     echo 
     '<div class="card">
         <h1><i class="fas fa-user-graduate"></i> Kích hoạt tài khoản thành công!</h1>

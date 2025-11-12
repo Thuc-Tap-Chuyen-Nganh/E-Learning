@@ -1,57 +1,508 @@
-/* GENERAL */
+/* --- Reset & Globals --- */
+:root {
+    /* --- MÀU CẬP NHẬT --- */
+    
+    /* 1. Màu rắn chính (dùng cho text, icon, hover) */
+    /* Lấy màu đầu tiên từ gradient */
+    --primary-color: #8e2de2; 
+    
+    /* 2. Màu gradient chính (dùng cho background) */
+    --primary-gradient: linear-gradient(
+                          90deg,
+                          #8e2de2 0%, 
+                          #4a00e0 40%, 
+                          #0099f7 100%
+                        );
+    
+    /* 3. Màu sáng phụ*/
+    --primary-light: #E6E6FA;
+
+    /* --- Các màu khác --- */
+    --dark-blue: #0F0A28;
+    --text-dark: #333;
+    --text-light: #555;
+    --white: #ffffff;
+    --border-light: #f0f0f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #E6E6FA;
-  margin: 0;
-  height: 1000px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
 }
 
-/* GENERAL */
-
-/* HEADER */
-body header{
-  background-color: white;
-  font-family: 'Roboto', sans-serif;
-  height: 64px;
-  padding: 0px 10%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
+/* Ngăn cuộn trang khi menu mobile mở */
+body.no-scroll {
+    overflow: hidden;
 }
 
-.left {
-  background-color: #0099f7;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.gradient-text {
-  background: linear-gradient(
-    90deg,
-    #8e2de2 0%, /* Tím đậm */
-    #4a00e0 40%, /* Tím/xanh */
-    #0099f7 100% /* Xanh dương */
-  );
-  color: #0000;
-  -webkit-background-clip: text;
-  background-clip: text;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.mid {
-  background-color: #0099f7;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-.right {
-  background-color: #0099f7;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-align: center;
+}
+
+.btn-primary {
+    /* Đổi từ gradient cũ sang biến gradient mới */
+    background: var(--primary-gradient); 
+    color: var(--white);
+}
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.btn-secondary:hover {
+    background-color: #f8f8f8;
+    border-color: #ccc;
+}
+
+.btn-light {
+     background-color: var(--white);
+     color: var(--primary-color);
+}
+ .btn-light:hover {
+     background-color: #f0e8ff;
+ }
+
+
+/* --- Header --- */
+.header {
+    background-color: var(--white);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.logo i {
+    margin-right: 8px;
+    font-size: 28px;
+}
+
+/* Navbar cho Desktop */
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+.nav-links a {
+    font-weight: 500;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.auth-buttons .login-btn {
+    font-weight: 600;
+    color: var(--text-light);
+}
+.auth-buttons .login-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Nút Hamburger (ẩn trên desktop) */
+.hamburger-icon {
+    display: none; /* Ẩn mặc định */
+    font-size: 24px;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+
+
+/* --- Mobile Nav (Ẩn mặc định) --- */
+.mobile-nav-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    
+    /* Ẩn ban đầu */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Lớp phủ mờ */
+.mobile-nav-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Khung menu chính */
+.mobile-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 85%;
+    max-width: 320px;
+    height: 100%;
+    background: var(--white);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    
+    /* Hiệu ứng trượt vào */
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.mobile-nav-close-btn {
+    font-size: 24px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    margin-top: 20px;
+}
+.mobile-nav-links li {
+    margin-bottom: 15px;
+}
+.mobile-nav-links a {
+    display: block;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.mobile-auth-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.mobile-auth-buttons .btn {
+    width: 100%;
+}
+
+
+/* Khi menu mobile được kích hoạt */
+.mobile-nav-container.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+.mobile-nav-container.is-active .mobile-nav {
+    transform: translateX(0);
+}
+
+
+/* --- Hero Section --- */
+.hero {
+    background-color: var(--primary-light);
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.hero-content {
+    flex: 1;
+}
+.hero-content h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.hero-content p {
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 30px;
+    max-width: 500px;
+}
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+}
+.hero-stats .stat {
+    text-align: left;
+}
+.hero-stats .stat h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+.hero-stats .stat p {
+    font-size: 16px;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-image img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: rotateZ(3deg);
+}
+
+/* --- Features Section --- */
+.features {
+    padding: 100px 0;
+    background-color: var(--white);
+}
+.features-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+.features-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+.features-header p {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.feature-card .icon {
+    font-size: 24px;
+    color: var(--white);
+    /* Đổi từ background-color sang background: var(--primary-gradient) */
+    background: var(--primary-gradient);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.feature-card p {
+    font-size: 15px;
+    color: var(--text-light);
+}
+
+/* --- CTA Section --- */
+.cta {
+    padding: 80px 0;
+    /* Đổi từ gradient cũ sang biến gradient mới */
+    background: var(--primary-gradient);
+    color: var(--white);
+    text-align: center;
+}
+.cta h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.cta p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--dark-blue);
+    color: #ccc;
+    padding: 80px 0 40px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-about .logo {
+    color: var(--white);
+}
+.footer-about p {
+    margin-top: 15px;
+    font-size: 15px;
+    max-width: 300px;
+}
+
+.footer-links h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 20px;
+}
+.footer-links ul {
+    list-style: none;
+}
+.footer-links ul li {
+    margin-bottom: 12px;
+}
+.footer-links ul a {
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+.footer-links ul a:hover {
+    color: var(--white);
+}
+
+/* ======== RESPONSIVE STYLES ======== */
+
+/* Máy tính bảng và thiết bị nhỏ (dưới 992px) */
+@media (max-width: 992px) {
+    
+    /* Ẩn navbar desktop và hiện nút hamburger */
+    .navbar {
+        display: none;
+    }
+    .hamburger-icon {
+        display: block;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero .container {
+        flex-direction: column;
+    }
+    .hero-content {
+        text-align: center;
+    }
+    .hero-buttons, .hero-stats {
+        justify-content: center;
+    }
+    .hero-image img {
+        transform: rotateZ(0);
+    }
+}
+
+/* Điện thoại (dưới 768px) */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .hero-content p {
+        font-size: 18px;
+    }
+    .features-header p {
+        font-size: 20px;
+    }
+}
+
+/* Điện thoại nhỏ (dưới 576px) */
+@media (max-width: 576px) {
+    .features-grid, .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-buttons {
+        flex-direction: column;
+    }
+    .hero-stats {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+    .hero-stats .stat {
+        text-align: center;
+    }
 }

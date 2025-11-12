@@ -1,4 +1,3 @@
-<!-- forgot.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -10,36 +9,43 @@
 </head>
 <body>
   <div class="card">
-    <div class="header">
-      <h1><i class="fas fa-key"></i> Quên mật khẩu?</h1>
-      <p>Nhập email để nhận liên kết đặt lại mật khẩu</p>
-    </div>
-    <div class="form">
-      <div class="form-group">
-        <label for="email">Email đã đăng ký</label>
-        <input type="email" id="email" placeholder="example@elearning.com" />
+    <form action="src/handlers/forgot_handler.php" method="post" id="forgotForm">
+      <div class="header">
+        <h1><i class="fas fa-key"></i> Quên mật khẩu?</h1>
+        <p>Nhập email để nhận liên kết đặt lại mật khẩu</p>
       </div>
-      <button class="btn">Gửi hướng dẫn</button>
-      <a href="login.php" class="back-link">
-        <i class="fas fa-arrow-left"></i> Quay lại đăng nhập
-      </a>
-    </div>
+      <div class="form">
+        <div class="form-group">
+          <label for="email">Email đã đăng ký</label>
+          <input type="email" id="email" name="email" placeholder="example@elearning.com" />
+        </div>
+        <?php
+        $message = "";
+        $is_success_message = false;
+
+        //Kiểm tra thông báo THÀNH CÔNG
+        if (isset($_GET['status']) && $_GET['status'] == 'sent') {
+          $message = "Nếu email tồn tại, link reset sẽ được gửi. 
+          Vui lòng kiểm tra email!";
+          $is_success_message = true;
+        }
+
+        //Kiểm tra thông báo LỖI 
+        if (isset($_GET['error'])) {
+          $message = "Có lỗi xảy ra, vui lòng thử lại.";
+        }
+        ?>
+        <!--Cái này error xử lý còn chưa ok (để sau)-->
+        <div class="error" id="errorMsg" style="<?php echo $is_success_message ? 'color: green;' : ''; ?>">
+          <?php echo $message; ?>
+        </div>
+        <button class="btn">Gửi yêu cầu</button>
+        <a href="login.php" class="back-link">
+          <i class="fas fa-arrow-left"></i> Quay lại đăng nhập
+        </a>
+      </div>
+    </form>
   </div>
-    <script>
-    function handleSubmit() {
-      const email = document.getElementById('email').value.trim();
-      document.getElementById('email-error').style.display = 'none';
-      
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        document.getElementById('email-error').textContent = email ? 'Email không hợp lệ' : 'Vui lòng nhập email';
-        document.getElementById('email-error').style.display = 'block';
-        return;
-      }
-
-      alert(`✉️ Đã gửi liên kết khôi phục mật khẩu đến:\n${email}\n(Vui lòng kiểm tra hộp thư trong 5 phút)`);
-      window.location.href = 'index.html';
-    }
-  </script>
+  <script src="public/js/validate.js"></script>
 </body>
-
 </html>

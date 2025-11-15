@@ -1,0 +1,129 @@
+/* --- Biến màu (giữ cho nhất quán) --- */
+:root {
+    --primary-blue: #007bff; /* Màu xanh dương cho icon */
+    --primary-light: #f0f4ff; /* Màu nền xanh rất nhạt */
+    --text-dark: #111;
+    --text-light: #555;
+    --white: #ffffff;
+    --border-light: #ddd;
+    --background-input: #f8f9fa;
+}
+
+/* --- Reset & Globals --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--primary-light);
+    color: var(--text-dark);
+    display: grid; /* Sử dụng grid để căn giữa */
+    place-items: center; /* Căn giữa hoàn hảo */
+    padding: 20px;
+}
+
+/* --- Thẻ đăng nhập --- */
+.login-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.login-icon {
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+/* --- Form --- */
+form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--background-input);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.error { 
+  text-align: center;
+  color: red; 
+  font-size: 14px; 
+  margin: 10px 0px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--text-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #333;
+}
+
+.demo-text {
+    font-size: 13px;
+    color: #777;
+    margin-top: 25px;
+}

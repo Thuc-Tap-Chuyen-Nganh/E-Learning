@@ -77,42 +77,7 @@ function format_status($status) {
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <a href="admin_dashboard.php" class="logo">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>EduTech Admin</span>
-            </a>
-        </div>
-
-        <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a href="admin_dashboard.php">
-                        <i class="fa-solid fa-table-columns"></i>
-                        <span>Tổng quan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_courses.php" class="active"> <i class="fa-solid fa-book"></i>
-                        <span>Quản lý khóa học</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_students.php"> 
-                        <i class="fa-solid fa-users"></i>
-                        <span>Quản lý học viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_reports.php"> 
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span>Báo cáo thống kê</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+    <?php include 'templates/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -120,10 +85,6 @@ function format_status($status) {
                 <h1>Quản lý khóa học</h1>
                 <p>Quản lý và theo dõi tất cả các khóa học</p>
             </div>
-            <a href="../src/admin_handlers/admin_logout.php" class="logout-btn">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Đăng xuất</span>
-            </a>
         </header>
 
         <main class="main-content">
@@ -209,6 +170,9 @@ function format_status($status) {
                                                 data-title="<?php echo htmlspecialchars($row['title']); ?>">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
+                                        <a href="admin_course_details.php?course_id=<?php echo $row['course_id']; ?>" class="btn btn-detail-link">
+                                            <span>Chi tiết</span> <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
                                     </td>
                                 </tr>
                         <?php

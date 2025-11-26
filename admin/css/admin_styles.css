@@ -62,9 +62,11 @@ button {
     left: 0;
     top: 0;
     border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
     padding: 20px;
+    
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; /* Đẩy nội dung ra 2 đầu */
 }
 .sidebar-header {
     margin-bottom: 25px;
@@ -81,7 +83,8 @@ button {
     margin-right: 10px;
 }
 .sidebar-nav {
-    flex-grow: 1;
+    flex-grow: 1; 
+    overflow-y: auto;
 }
 .sidebar-nav ul {
     list-style: none;
@@ -110,6 +113,29 @@ button {
     background: var(--primary-light-blue);
     color: var(--primary-blue);
     font-weight: 600;
+}
+.sidebar-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa nội dung nút */
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--light-text);
+    transition: all 0.3s ease;
+    background-color: var(--white);
+    text-decoration: none;
+}
+.sidebar-logout-btn i {
+    font-size: 16px;
+}
+/* Hiệu ứng Hover: Chuyển sang màu đỏ nhạt để báo hiệu thoát */
+.sidebar-logout-btn:hover {
+    background-color: #fee2e2; /* Màu nền đỏ rất nhạt */
+    color: #dc2626; /* Màu chữ đỏ */
+    border-color: #fee2e2;
 }
 
 /* --- Main Header (Tiêu đề nội dung) --- */
@@ -748,7 +774,387 @@ button {
 .btn-danger:hover {
     background-color: #c9302c;
 }
-.delete-btn {}
+/* Link "Quay lại" trên header */
+.back-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.back-link i {
+    margin-right: 5px;
+}
+.main-header .header-title h1 {
+    /* Điều chỉnh lại h1 khi có back-link */
+    margin-bottom: 4px;
+}
+
+/* Màu icon sách mới cho 3 thẻ stat */
+.card-icon.icon-book-blue { background: #e6f2ff; color: #007bff; }
+.card-icon.icon-book-green { background: #e6f7ec; color: #198754; }
+.card-icon.icon-book-purple { background: #f2e6ff; color: #6f42c1; }
+
+
+/* Danh sách chương (Thay thế cho bảng) */
+.list-container {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.list-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+.list-controls {
+    display: flex;
+    gap: 15px;
+}
+
+/* Mục chương (Chapter Item) */
+.chapter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.chapter-item {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+}
+.chapter-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.chapter-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.chapter-order {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-light-blue);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+.chapter-details h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 4px;
+}
+.chapter-details p {
+    font-size: 14px;
+    color: var(--light-text);
+    margin-bottom: 6px;
+}
+.chapter-meta {
+    font-size: 13px;
+    color: var(--grey-text);
+    font-weight: 500;
+}
+.chapter-meta span {
+    margin-right: 8px;
+}
+
+.chapter-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Nút "Xem bài học" / "Chi tiết" */
+.btn-detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    background: var(--primary-light-blue);
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+}
+.btn-detail-link:hover {
+    background: #dbeaff; /* Màu xanh nhạt hơn 1 chút */
+}
+.btn-detail-link i {
+    font-size: 12px;
+}
+
+/* Badge màu riêng cho Quiz */
+.status-badge.status-quiz {
+    background: #f2e6ff;
+    color: #6f42c1;
+}
+
+/* Layout 2 cột trong form modal (để loại bài học và thời lượng nằm ngang hàng) */
+.form-row-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Tinh chỉnh CKEditor trong Modal để không bị vỡ layout */
+.cke_chrome {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+/* Biểu tượng cho Quiz */
+.lesson-icon.icon-quiz {
+    background: #eae6ff;
+    color: #6554c0;
+}
+
+/* =========================================
+   GIAO DIỆN DANH SÁCH BÀI HỌC (LESSON LIST)
+   ========================================= */
+
+/* 1. Container chính */
+.list-container {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 30px; /* Tăng padding cho thoáng */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Bóng mờ nhẹ hiện đại */
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+.list-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin: 0;
+}
+
+/* 2. Danh sách bài học (Flex Column) */
+.lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Khoảng cách giữa các thẻ */
+}
+
+/* 3. Thẻ Bài học (Lesson Item Card) */
+.lesson-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+.lesson-item:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+/* 4. Icon Tròn (Bên trái) */
+.lesson-icon-wrapper {
+    margin-right: 20px;
+}
+
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* Phối màu Icon (Pastel Background + Main Color Text) */
+.icon-video { background: #fff0eb; color: #ff5630; } /* Cam */
+.icon-doc { background: #e6fcff; color: #00b8d9; }   /* Xanh Cyan */
+.icon-quiz { background: #eae6ff; color: #6554c0; }  /* Tím */
+
+/* 5. Thông tin Bài học (Ở giữa) */
+.lesson-info {
+    flex-grow: 1; /* Chiếm hết khoảng trống */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lesson-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lesson-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin: 0;
+}
+
+/* Badge loại bài học */
+.meta-badge {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.badge-video { background: #fff0eb; color: #ff5630; }
+.badge-doc { background: #e6fcff; color: #00b8d9; }
+.badge-quiz { background: #eae6ff; color: #6554c0; }
+
+.lesson-meta-row {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: var(--grey-text);
+}
+
+.meta-item i {
+    margin-right: 5px;
+}
+
+.meta-dot {
+    margin: 0 10px;
+    color: #ccc;
+    font-weight: bold;
+}
+
+/* 6. Hành động (Bên phải) */
+.lesson-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 20px;
+    border-left: 1px solid #f0f0f0; /* Đường kẻ dọc ngăn cách nhẹ */
+    margin-left: 20px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grey-text);
+    transition: all 0.2s;
+    text-decoration: none; /* Cho thẻ a */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-icon:hover {
+    background-color: var(--background-grey);
+    color: var(--dark-text);
+}
+
+.btn-icon.btn-delete:hover {
+    background-color: #ffe6e6;
+    color: var(--delete-red);
+}
+
+/* Nút Xem chi tiết / Câu hỏi */
+.btn-action-pill {
+    padding: 8px 16px;
+    background-color: var(--primary-light-blue);
+    color: var(--primary-blue);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-action-pill:hover {
+    background-color: #dbeaff;
+}
+
+.btn-action-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary-blue);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-action-text:hover {
+    text-decoration: underline;
+}
+
+/* 7. Trạng thái trống (Empty State) */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #fafafa;
+    border: 2px dashed #e0e0e0;
+    border-radius: 12px;
+}
+
+.empty-icon {
+    font-size: 40px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.empty-text {
+    font-size: 15px;
+    color: var(--light-text);
+    margin-bottom: 20px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+/* 1. Giới hạn chiều cao của vùng soạn thảo */
+.ck-editor__editable_inline {
+    min-height: 200px;       /* Chiều cao tối thiểu lúc chưa có chữ */
+    max-height: 400px;       /* Chiều cao tối đa (quan trọng nhất) */
+    overflow-y: auto;        /* Hiện thanh cuộn dọc nếu nội dung dài hơn 400px */
+}
+
+/* 2. Đảm bảo Modal Body cũng có thể cuộn nếu màn hình laptop nhỏ */
+.modal-body {
+    max-height: 70vh;        /* Modal body không bao giờ cao quá 70% màn hình */
+    overflow-y: auto;        /* Cho phép cuộn nội dung modal */
+}
 
 /* --- Cập nhật Responsive --- */
 @media (max-width: 1200px) {

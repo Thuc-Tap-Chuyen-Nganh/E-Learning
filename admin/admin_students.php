@@ -24,42 +24,7 @@ if (!isset($_SESSION['admin_id'])) {
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <a href="admin_dashboard.php" class="logo">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>EduTech Admin</span>
-            </a>
-        </div>
-
-        <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a href="admin_dashboard.php">
-                        <i class="fa-solid fa-table-columns"></i>
-                        <span>Tổng quan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_courses.php"> 
-                        <i class="fa-solid fa-book"></i>
-                        <span>Quản lý khóa học</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_students.php" class="active"> <i class="fa-solid fa-users"></i>
-                        <span>Quản lý học viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="admin_reports.php"> 
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span>Báo cáo thống kê</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+    <?php include 'templates/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -67,10 +32,6 @@ if (!isset($_SESSION['admin_id'])) {
                 <h1>Quản lý học viên</h1>
                 <p>Quản lý và theo dõi thông tin học viên</p>
             </div>
-            <a href="../src/admin_handlers/admin_logout.php" class="logout-btn">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Đăng xuất</span>
-            </a>
         </header>
 
         <main class="main-content">
@@ -123,15 +84,14 @@ if (!isset($_SESSION['admin_id'])) {
                         <tr>
                             <th>Học viên</th>
                             <th>Email</th>
-                            <th>Số điện thoại</th>
                             <th>Khóa học ĐK</th>
-                            <th>Đã hoàn thành</th>
                             <th>Ngày tham gia</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
+                        
                         <tr>
                             <td>
                                 <div class="avatar-cell">

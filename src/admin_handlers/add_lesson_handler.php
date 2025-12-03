@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $chapter_id = $_POST['chapter_id'];
     $title = $_POST['title'];
     $lesson_type = $_POST['lesson_type'];
+    $sort_order = $_POST['sort_order'];
     
     // Khởi tạo các biến nội dung là NULL trước
     $video_url = null;
@@ -49,12 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 4. INSERT vào CSDL
     // Câu lệnh SQL này phải khớp với cấu trúc bảng lessons bạn đã tạo/sửa
     $stmt = $conn->prepare("
-        INSERT INTO lessons (chapter_id, title, lesson_type, video_url, content, duration) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO lessons (chapter_id, title, lesson_type, video_url, content, duration, sort_order) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
     
     // "issssi" -> int, string, string, string, string, int
-    $stmt->bind_param("issssi", $chapter_id, $title, $lesson_type, $video_url, $content, $duration);
+    $stmt->bind_param("issssii", $chapter_id, $title, $lesson_type, $video_url, $content, $duration, $sort_order);
 
     if ($stmt->execute()) {
         header("Location: ../../admin/admin_chapter_details.php?chapter_id=$chapter_id&status=added");

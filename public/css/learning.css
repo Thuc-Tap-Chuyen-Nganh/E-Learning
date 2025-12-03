@@ -1,0 +1,235 @@
+/* public/css/learning.css */
+
+/* =========================================
+   VARIABLES & RESET
+   ========================================= */
+:root {
+    --primary-color: #8e2de2;
+    --primary-gradient: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --success-color: #22c55e;
+    
+    --header-height: 70px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--white); 
+    color: var(--text-dark); 
+    height: 100vh; 
+    overflow: hidden; /* App-like layout */
+}
+
+/* =========================================
+   HEADER (GIAO DIỆN SÁNG)
+   ========================================= */
+.learning-header {
+    height: var(--header-height);
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 25px;
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+}
+
+.back-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+.back-link:hover {
+    background-color: var(--bg-light);
+    color: var(--primary-color);
+}
+
+.course-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid var(--border-color);
+    max-width: 400px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Progress Bar trên Header */
+.user-progress {
+    display: flex; align-items: center; gap: 15px;
+}
+.progress-track {
+    width: 200px; height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--success-color);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+.progress-text {
+    font-size: 14px; font-weight: 700; color: var(--text-dark);
+}
+
+/* =========================================
+   MAIN LAYOUT (FLEX)
+   ========================================= */
+.learning-container {
+    display: flex;
+    margin-top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+}
+
+/* 1. CONTENT AREA (LEFT - SCROLLABLE) */
+.learning-content {
+    flex: 1; /* Chiếm hết phần còn lại */
+    overflow-y: auto;
+    background: var(--white);
+    display: flex; flex-direction: column;
+}
+
+/* Video Wrapper (Chuẩn 16:9, Nền đen) */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background: #000;
+}
+.video-wrapper iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+}
+
+/* Text Content Wrapper */
+.text-content-wrapper {
+    padding: 60px 20%; /* Căn giữa nội dung đọc */
+    line-height: 1.8; font-size: 17px; color: #334155;
+}
+.text-content-wrapper h1 { font-size: 32px; font-weight: 800; margin-bottom: 30px; line-height: 1.3; }
+.ck-content img { max-width: 100%; border-radius: 8px; margin: 20px 0; }
+
+/* Info Bar & Actions */
+.lesson-info-bar {
+    padding: 30px 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+.lesson-info-bar h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+.lesson-desc { color: var(--text-light); font-size: 15px; }
+
+.action-bar {
+    padding: 20px 40px;
+    display: flex; justify-content: flex-end; /* Đẩy nút sang phải */
+    background: var(--bg-light);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;
+}
+.btn-primary {
+    background: var(--primary-gradient); color: white; box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-success {
+    background: var(--success-color); color: white; opacity: 1 !important; cursor: default;
+}
+
+/* =========================================
+   2. SIDEBAR (RIGHT - CURRICULUM)
+   ========================================= */
+.learning-sidebar {
+    width: 380px; /* Cố định chiều rộng */
+    border-left: 1px solid var(--border-color);
+    background: var(--bg-light);
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-weight: 700; font-size: 16px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--white);
+    position: sticky; top: 0; z-index: 10;
+}
+
+/* Accordion Chapter */
+.chapter-item {
+    border-bottom: 1px solid var(--border-color);
+    background: var(--white);
+}
+.chapter-header {
+    padding: 15px 20px;
+    background: #f1f5f9;
+    cursor: pointer;
+    font-weight: 700; font-size: 15px; color: var(--text-dark);
+    display: flex; justify-content: space-between; align-items: center;
+    transition: 0.2s;
+}
+.chapter-header:hover { background: #e2e8f0; }
+.chapter-header i { font-size: 12px; transition: transform 0.3s; }
+
+/* Lesson List */
+.lesson-list { display: block; }
+
+.lesson-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 20px;
+    text-decoration: none; color: var(--text-light);
+    transition: 0.2s; border-left: 4px solid transparent;
+}
+.lesson-item:hover {
+    background: var(--bg-light); color: var(--primary-color);
+}
+
+/* Active State */
+.lesson-item.active {
+    background: #f3e8ff; /* Tím rất nhạt */
+    border-left-color: var(--primary-color);
+    color: var(--text-dark);
+}
+
+.lesson-icon {
+    margin-top: 4px; font-size: 14px;
+}
+.lesson-item.active .lesson-icon { color: var(--primary-color); }
+
+.lesson-title {
+    font-size: 14px; line-height: 1.5; font-weight: 500;
+}
+.lesson-duration {
+    font-size: 12px; color: #94a3b8; margin-left: auto; white-space: nowrap;
+}
+
+/* Quiz Style */
+.lesson-item.quiz-type .lesson-icon { color: #f59e0b; }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1024px) {
+    .learning-container { flex-direction: column; overflow-y: auto; height: auto; }
+    .learning-content { width: 100%; min-height: auto; }
+    .learning-sidebar { width: 100%; height: auto; border-left: none; border-top: 1px solid var(--border-color); }
+    
+    .course-title { display: none; } /* Ẩn tên khóa học trên mobile để header gọn */
+    .text-content-wrapper { padding: 40px 20px; }
+    
+    .lesson-info-bar, .action-bar { padding: 20px; }
+    
+    body { overflow: auto; } /* Cho phép cuộn trang trên mobile */
+}

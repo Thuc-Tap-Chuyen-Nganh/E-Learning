@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editType = document.getElementById('edit_lesson_type');
     const editVideo = document.getElementById('edit_content_url');
     const editDuration = document.getElementById('edit_duration');
+    const editOrder = document.getElementById('edit_sort_order');
 
     function toggleEditFields() {
         const value = editType.value;
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = this.dataset.type;
             const video = this.dataset.video;
             const duration = this.dataset.duration;
+            const order = this.dataset.order;
             
             const contentDiv = document.getElementById('lesson-content-data-' + id);
             const contentRaw = contentDiv ? contentDiv.innerHTML.trim() : '';
@@ -97,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             editType.value = type;
             editVideo.value = video;
             editDuration.value = duration;
+            editOrder.value = order;
 
             if (editorEditInstance) {
                 editorEditInstance.setData(contentRaw);

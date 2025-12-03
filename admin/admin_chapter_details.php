@@ -144,6 +144,7 @@ $result_lessons = $stmt_lessons->get_result();
                                         data-type="<?php echo $lesson['lesson_type']; ?>"
                                         data-video="<?php echo htmlspecialchars($lesson['video_url'] ?? ''); ?>"
                                         data-duration="<?php echo $lesson['duration']; ?>"
+                                        data-order="<?php echo $lesson['sort_order']; ?>"
                                     >
                                         <i class="fa-solid fa-pencil"></i>
                                     </button>
@@ -201,6 +202,11 @@ $result_lessons = $stmt_lessons->get_result();
                     <div class="form-group">
                         <label for="lesson_title">Tên bài học</label>
                         <input type="text" id="lesson_title" name="title" placeholder="Ví dụ: Giới thiệu React..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thứ tự</label>
+                        <input type="number" name="sort_order" value="<?php echo $result_lessons->num_rows + 1; ?>" required>
                     </div>
 
                     <div class="form-group">
@@ -262,6 +268,11 @@ $result_lessons = $stmt_lessons->get_result();
                     <div class="form-group">
                         <label>Tên bài học</label>
                         <input type="text" id="edit_lesson_title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thứ tự</label>
+                        <input type="number" id="edit_sort_order" name="sort_order" required>
                     </div>
 
                     <div class="form-group">

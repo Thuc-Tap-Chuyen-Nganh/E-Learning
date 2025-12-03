@@ -1,0 +1,282 @@
+/* =========================================
+   1. COURSE HERO (NỀN TỐI)
+   ========================================= */
+.course-hero {
+    background-color: #1c1d1f; /* Màu nền tối chuẩn E-learning */
+    color: var(--white);
+    padding: 40px 0;
+}
+
+.hero-container {
+    display: flex;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 700px; /* Chừa chỗ cho sidebar bên phải */
+    padding-right: 40px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    font-size: 14px;
+    color: #cec0fc; /* Màu tím nhạt */
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.breadcrumbs a { color: #cec0fc; }
+.breadcrumbs a:hover { color: var(--white); text-decoration: underline; }
+.breadcrumbs i { font-size: 10px; margin: 0 8px; }
+
+/* Title & Desc */
+.course-title {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.course-desc {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Meta Row (Rating, Students) */
+.course-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.badge-bestseller {
+    background-color: #eceb98;
+    color: #3d3c0a;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.rating-stars {
+    color: #f69c08;
+    font-size: 14px;
+    font-weight: 700;
+}
+.rating-number {
+    margin-right: 5px;
+    font-size: 16px;
+}
+.rating-count {
+    color: #d1d7dc;
+    font-weight: 400;
+    margin-left: 5px;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.students-count {
+    font-size: 14px;
+}
+
+/* Instructor & Lang */
+.course-instructor-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.course-instructor-info a {
+    color: #cec0fc;
+    text-decoration: underline;
+}
+
+.course-lang {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* =========================================
+   2. LAYOUT GRID (MAIN + SIDEBAR)
+   ========================================= */
+.course-main-section {
+    padding: 40px 0;
+    position: relative;
+}
+
+.layout-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Cột trái rộng gấp đôi cột phải */
+    gap: 40px;
+}
+
+/* =========================================
+   3. LEFT COLUMN CONTENT
+   ========================================= */
+.course-left-col {
+    max-width: 700px;
+}
+
+/* Box: What you'll learn */
+.what-learn-box {
+    border: 1px solid #d1d7dc;
+    padding: 25px;
+    margin-bottom: 40px;
+    background: #fff;
+}
+.what-learn-box h3 { font-size: 24px; margin-bottom: 20px; }
+
+.learn-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.learn-list li {
+    font-size: 14px;
+    color: var(--text-dark);
+    display: flex;
+    gap: 10px;
+}
+.learn-list li i {
+    color: var(--text-dark);
+    margin-top: 3px;
+}
+
+/* Box: Curriculum (Accordion) */
+.course-curriculum { margin-bottom: 40px; }
+.course-curriculum h3 { font-size: 24px; margin-bottom: 10px; }
+.curriculum-stats { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
+
+.accordion-item { border: 1px solid #d1d7dc; margin-bottom: -1px; } /* Dính liền nhau */
+.accordion-header {
+    background: #f7f9fa;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+.accordion-title i { margin-right: 10px; font-size: 12px; transition: 0.3s; }
+.accordion-meta { font-size: 13px; color: var(--text-light); font-weight: 400; }
+
+.accordion-body {
+    padding: 10px 20px 5px;
+    background: #fff;
+    border-top: 1px solid #d1d7dc;
+}
+.accordion-body ul li {
+    display: flex; justify-content: space-between;
+    margin-bottom: 5px; font-size: 14px; color: var(--text-light);
+    background-color: var(--section-bg-light);
+    padding: 10px 20px;
+}
+.accordion-body ul li div { 
+    display: flex; justify-content: center; 
+    align-items: center;
+}
+.accordion-body ul li i { margin-right: 8px; width: 14px; text-align: center;}
+
+/* Box: Instructor */
+.instructor-section { margin-bottom: 40px; }
+.instructor-section h3 { font-size: 24px; margin-bottom: 20px; }
+.instructor-profile { display: flex; gap: 20px; }
+.instructor-profile img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+.instructor-details h4 a { color: var(--primary-color); text-decoration: underline; font-size: 18px; font-weight: 700; }
+.job-title { color: var(--text-light); margin-bottom: 10px; }
+.instructor-stats {
+    display: flex; gap: 15px; font-size: 13px; color: var(--text-dark); margin-bottom: 15px;
+}
+.instructor-stats i { margin-right: 5px; }
+.bio { font-size: 14px; line-height: 1.6; }
+
+/* Box: Reviews */
+.reviews-section h3 { font-size: 24px; margin-bottom: 20px; }
+.review-item { border-bottom: 1px solid #d1d7dc; padding: 20px 0; }
+.review-user { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+.user-avatar {
+    width: 40px; height: 40px; background: var(--text-dark); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+}
+.user-avatar.color-2 { background: var(--primary-color); }
+.user-info h5 { font-size: 15px; margin-bottom: 2px; }
+.stars { color: #f69c08; font-size: 12px; }
+.review-time { margin-left: auto; font-size: 13px; color: var(--text-light); }
+.review-text { font-size: 15px; line-height: 1.5; }
+
+/* =========================================
+   4. RIGHT COLUMN (STICKY SIDEBAR)
+   ========================================= */
+.course-sidebar-wrapper {
+    position: relative;
+    z-index: 10;
+}
+
+.course-sidebar {
+    background: #fff;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    border: 1px solid #fff;
+    position: sticky;
+    top: 100px; /* Cách top khi cuộn */
+    width: 340px;
+    margin-top: -250px; /* Kỹ thuật kéo lên đè lên Hero Section */
+}
+
+/* Video Preview */
+.preview-video {
+    position: relative;
+    padding: 3px;
+    background: #fff;
+    cursor: pointer;
+}
+.preview-video img { width: 100%; height: 190px; object-fit: cover; }
+.play-btn {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: var(--text-dark);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.preview-text {
+    position: absolute; bottom: 20px; width: 100%; text-align: center;
+    color: #fff; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Sidebar Content */
+.sidebar-content { padding: 20px; }
+
+.price-box { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+.current-price { font-size: 32px; font-weight: 800; color: var(--text-dark); }
+.original-price { font-size: 16px; text-decoration: line-through; color: var(--text-light); }
+.discount-badge { font-size: 14px; color: var(--text-dark); font-weight: 600; }
+
+.time-left { color: #b32d0f; font-size: 14px; margin-bottom: 15px; }
+.time-left i { margin-right: 5px; }
+
+.btn-full { width: 100%; padding: 14px; font-size: 16px; font-weight: 700; }
+.guarantee { font-size: 12px; text-align: center; margin-top: 10px; color: var(--text-light); }
+
+.includes-box { margin-top: 20px; }
+.includes-box h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.includes-box ul li {
+    font-size: 14px; margin-bottom: 8px; color: var(--text-dark);
+    display: flex; align-items: center; gap: 10px;
+}
+.includes-box ul li i { width: 16px; text-align: center; font-size: 13px; }
+
+.share-course { text-align: center; margin-top: 20px; }
+.share-course a { font-weight: 600; text-decoration: underline; font-size: 14px; }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+    .hero-content { max-width: 100%; padding-right: 0; }
+    .course-sidebar { margin-top: 0; width: 100%; position: static; margin-bottom: 30px; }
+    .layout-grid { grid-template-columns: 1fr; display: flex; flex-direction: column-reverse; }
+    /* Đảo ngược để Sidebar hiện lên trên Content ở Mobile */
+}

@@ -1,3 +1,6 @@
+<?php
+require_once 'config/config.php'; 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -5,11 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Đăng nhập | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="public/css/login.css">
+  <link rel="stylesheet" href="assets/css/login.css?v=<?= filemtime('assets/css/login.css') ?>">
 </head>
 <body>
   <div class="card">
-    <form action="src/handlers/login_handler.php" method="post" id="loginForm">
+    <form action="<?= BASE_URL ?>logic/auth/login.php" method="post" id="loginForm">
       <div class="header">
         <h1><i class="fas fa-user-graduate"></i> Đăng nhập</h1>
         <p>Vào hệ thống E-Learning để học lập trình</p>
@@ -45,7 +48,7 @@
     </form>
     
   </div>
-  <script src="public/js/validate.js"></script>
+  <script src="assets/js/validate.js"></script>
 </body>
 </html>
 

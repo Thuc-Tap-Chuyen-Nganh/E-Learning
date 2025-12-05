@@ -1,7 +1,6 @@
 <?php
-// student/certificate.php
 session_start();
-require '../src/core/db_connect.php';
+require_once '../config/config.php';
 
 // 1. Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) exit('Vui lòng đăng nhập.');

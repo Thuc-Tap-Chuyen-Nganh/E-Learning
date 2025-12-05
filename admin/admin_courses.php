@@ -1,8 +1,6 @@
 <?php
-// admin/admin_courses.php
-
 session_start();
-require '../src/core/db_connect.php'; // Gọi file kết nối CSDL
+require_once '../config/config.php'; 
 
 // Bảo vệ trang
 if (!isset($_SESSION['admin_id'])) {
@@ -73,11 +71,11 @@ function format_status($status) {
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="css/admin_styles.css">
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -198,6 +196,6 @@ function format_status($status) {
             </div>
         </div>
     </div>
-    <script src="js/admin_courses.js"></script>
+    <script src="js/admin_courses.js?v=<?php echo filemtime('js/admin_courses.js'); ?>"></script>
 </body>
 </html>

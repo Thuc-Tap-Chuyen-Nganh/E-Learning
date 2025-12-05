@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once 'src/core/db_connect.php'; // Kết nối CSDL
+require_once 'config/config.php';
 
 // === 1. XỬ LÝ LỌC & TÌM KIẾM ===
 $search = isset($_GET['q']) ? trim($_GET['q']) : '';
@@ -37,9 +36,6 @@ if ($page < 1) $page = 1;
 $limit = 9; // Số khóa học mỗi trang
 $offset = ($page - 1) * $limit;
 
-// Tách câu lệnh để đếm tổng số dòng (cho phân trang)
-// (Ở đây làm đơn giản: Query lấy hết trước rồi array_slice, 
-// nhưng cách chuẩn là dùng SELECT COUNT(*) trước. Để code gọn ta làm query trực tiếp)
 $stmt = $conn->prepare($sql);
 if (!empty($params)) {
     $stmt->bind_param($types, ...$params);
@@ -60,16 +56,6 @@ $stmt_final->bind_param($types, ...$params);
 $stmt_final->execute();
 $result_courses = $stmt_final->get_result();
 
-// === 3. HÀM HELPER: LẤY ẢNH THEO DANH MỤC (VÌ DB CHƯA CÓ ẢNH) ===
-function get_course_image($category) {
-    $cat = strtolower($category);
-    if (strpos($cat, 'web') !== false) return 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80'; // Ảnh code
-    if (strpos($cat, 'data') !== false) return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80'; // Ảnh biểu đồ
-    if (strpos($cat, 'design') !== false || strpos($cat, 'thiết kế') !== false) return 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80'; // Ảnh nghệ thuật
-    if (strpos($cat, 'mobile') !== false) return 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&q=80'; // Ảnh điện thoại
-    if (strpos($cat, 'security') !== false || strpos($cat, 'bảo mật') !== false) return 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80'; // Ảnh hacker
-    return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80'; // Ảnh mặc định (Laptop)
-}
 ?>
 
 <!DOCTYPE html>
@@ -85,12 +71,12 @@ function get_course_image($category) {
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="public/css/index.css?v=<?= filemtime('public/css/index.css') ?>">
-    <link rel="stylesheet" href="public/css/courses.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="assets/css/index.css?v=<?= filemtime('assets/css/index.css') ?>">
+    <link rel="stylesheet" href="assets/css/courses.css?v=<?= time() ?>">
 </head>
 <body>
 
-    <?php require 'src/templates/header.php'; ?>
+    <?php require 'includes/header.php'; ?>
 
     <main>
         <section class="courses-banner">
@@ -158,7 +144,7 @@ function get_course_image($category) {
                                     
                                     <div class="course-card">
                                         <div class="course-thumb">
-                                            <img src="<?php echo get_course_image($row['category']); ?>" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                                            <img src="<?php echo get_course_image($row['thumbnail'], $row['category']); ?>" alt="<?php echo htmlspecialchars($row['title']); ?>">
                                             <span class="badge badge-beginner">Mọi trình độ</span>
                                         </div>
                                         <div class="course-body">
@@ -191,20 +177,14 @@ function get_course_image($category) {
                                                 <div class="course-meta">
                                                     <span><i class="fa-solid fa-video"></i> Online</span>
                                                 </div>
-                                                <div class="course-price">
-                                                    <?php if($row['price'] == 0): ?>
-                                                        <span style="color: #16a34a;">Miễn phí</span>
-                                                    <?php else: ?>
-                                                        <?php echo number_format($row['price'], 0, ',', '.'); ?>đ
-                                                    <?php endif; ?>
-                                                </div>
+                                                <div class="course-price"><?php echo format_currency($row['price']); ?></div>
                                             </div>
                                         </div>
                                     </div>
                                     <?php endwhile; ?>
                             <?php else: ?>
                                 <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                                    <img src="public/images/empty-search.png" alt="" style="width: 100px; margin: 0 auto 20px; opacity: 0.5;">
+                                    <img src="assets/images/empty-search.png" alt="" style="width: 100px; margin: 0 auto 20px; opacity: 0.5;">
                                     <h3>Không tìm thấy khóa học nào</h3>
                                     <p>Thử tìm kiếm từ khóa khác hoặc đặt lại bộ lọc.</p>
                                 </div>
@@ -239,7 +219,7 @@ function get_course_image($category) {
 
     </main>
 
-    <?php require 'src/templates/footer.php'; ?>
+    <?php require 'includes/footer.php'; ?>
 
 </body>
 </html>

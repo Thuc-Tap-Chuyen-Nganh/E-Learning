@@ -1,3 +1,25 @@
+<?php
+// Gọi file cấu hình (đã bao gồm kết nối DB và session)
+require_once 'config/config.php'; 
+
+// --- 1. LẤY SỐ LIỆU THỐNG KÊ (REALTIME) ---
+// Đếm tổng học viên
+$res_students = $conn->query("SELECT COUNT(*) FROM users WHERE role = 'student'");
+$count_students = $res_students->fetch_row()[0];
+
+// Đếm tổng khóa học đã xuất bản
+$res_courses = $conn->query("SELECT COUNT(*) FROM courses WHERE status = 'published'");
+$count_courses = $res_courses->fetch_row()[0];
+
+// Đếm tổng lượt đăng ký (Học viên đang học)
+$res_enrolls = $conn->query("SELECT COUNT(*) FROM enrollments");
+$count_enrolls = $res_enrolls->fetch_row()[0];
+
+// --- 2. LẤY 3 KHÓA HỌC MỚI NHẤT CHO PHẦN "NỔI BẬT" ---
+$sql_featured = "SELECT * FROM courses WHERE status = 'published' ORDER BY course_id DESC LIMIT 3";
+$result_featured = $conn->query($sql_featured);
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,39 +30,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="public/css/index.css?v=<?= filemtime('public/css/index.css') ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/index.css?v=<?= time() ?>">
 </head>
 <body>
 
-    <?php require 'src/templates/header.php'; ?>
-
-    <div class="mobile-nav-container" id="mobile-nav-container">
-        <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
-        <nav class="mobile-nav">
-            <div class="mobile-nav-header">
-                <a href="#" class="logo"><span>EduTech</span></a>
-                <div class="mobile-nav-close-btn" id="mobile-nav-close-btn"><i class="fa-solid fa-xmark"></i></div>
-            </div>
-            <ul class="mobile-nav-links">
-                <li><a href="index.php">Trang chủ</a></li>
-                <li><a href="courses.php">Khóa học</a></li>
-                <li><a href="student/my_courses.php">My EduTech</a></li>
-            </ul>
-            <div class="mobile-auth-buttons">
-                <a href="login.php" class="btn btn-secondary">Đăng nhập</a>
-                <a href="register.php" class="btn btn-primary">Đăng ký</a>
-            </div>
-        </nav>
-    </div>
+    <?php require 'includes/header.php'; ?>
 
     <main>
         <section class="hero-new">
             <div class="container">
                 <div class="hero-badge">
-                    <i class="fa-solid fa-graduation-cap"></i> Tham gia cùng 500,000+ học viên toàn cầu
+                    <i class="fa-solid fa-graduation-cap"></i> 
+                    Tham gia cùng <strong><?= number_format($count_students) ?>+</strong> học viên tài năng
                 </div>
                 
                 <h1 class="hero-title">
@@ -49,7 +52,7 @@
                 </h1>
                 
                 <p class="hero-subtitle">
-                    Làm chủ các kỹ năng công nghệ hàng đầu với các khóa học chuyên sâu về Lập trình, Khoa học dữ liệu, AI, và nhiều hơn nữa.
+                    Làm chủ các kỹ năng công nghệ hàng đầu với <strong><?= $count_courses ?></strong> khóa học chuyên sâu về Lập trình, Khoa học dữ liệu, AI, và nhiều hơn nữa.
                 </p>
 
                 <div class="hero-search-container">
@@ -62,9 +65,9 @@
 
                 <div class="hero-quick-links">
                     <span>Phổ biến:</span>
-                    <a href="#">Web Development</a>
-                    <a href="#">Python</a>
-                    <a href="#">Data Science</a>
+                    <a href="courses.php?category=Lập trình Web">Web Development</a>
+                    <a href="courses.php?category=Python">Python</a>
+                    <a href="courses.php?category=Data Science">Data Science</a>
                 </div>
             </div>
             
@@ -81,28 +84,28 @@
                     <div class="stat-card">
                         <div class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></div>
                         <div class="stat-info">
-                            <h3>500K+</h3>
-                            <p>Học viên đang học</p>
+                            <h3><?= number_format($count_students) ?></h3>
+                            <p>Học viên đăng ký</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon icon-purple"><i class="fa-solid fa-book-bookmark"></i></div>
                         <div class="stat-info">
-                            <h3>1,200+</h3>
+                            <h3><?= number_format($count_courses) ?></h3>
                             <p>Khóa học video</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon icon-pink"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <div class="stat-info">
-                            <h3>250+</h3>
-                            <p>Giảng viên chuyên gia</p>
+                            <h3><?= number_format($count_enrolls) ?></h3>
+                            <p>Lượt tham gia học</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon icon-green"><i class="fa-solid fa-star"></i></div>
                         <div class="stat-info">
-                            <h3>4.8/5</h3>
+                            <h3>4.9/5</h3>
                             <p>Đánh giá trung bình</p>
                         </div>
                     </div>
@@ -114,39 +117,39 @@
             <div class="container">
                 <div class="section-header center">
                     <h2>Khám phá Danh mục phổ biến</h2>
-                    <p>Chọn từ hàng trăm khóa học thuộc nhiều lĩnh vực công nghệ khác nhau</p>
+                    <p>Chọn từ các lĩnh vực công nghệ hot nhất hiện nay</p>
                 </div>
 
                 <div class="categories-grid">
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=Lập trình Web" class="cat-card">
                         <div class="cat-icon icon-code"><i class="fa-solid fa-code"></i></div>
                         <h3>Lập trình Web</h3>
-                        <p>142 khóa học</p>
+                        <p>HTML, CSS, JS, React...</p>
                     </a>
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=Lập trình Mobile" class="cat-card">
                         <div class="cat-icon icon-mobile"><i class="fa-solid fa-mobile-screen"></i></div>
                         <h3>Lập trình Mobile</h3>
-                        <p>89 khóa học</p>
+                        <p>Android, iOS, Flutter</p>
                     </a>
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=Data Science" class="cat-card">
                         <div class="cat-icon icon-data"><i class="fa-solid fa-database"></i></div>
                         <h3>Khoa học dữ liệu</h3>
-                        <p>76 khóa học</p>
+                        <p>Python, SQL, Big Data</p>
                     </a>
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=An ninh mạng" class="cat-card">
                         <div class="cat-icon icon-security"><i class="fa-solid fa-shield-halved"></i></div>
                         <h3>An ninh mạng</h3>
-                        <p>54 khóa học</p>
+                        <p>Ethical Hacking, Network</p>
                     </a>
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=AI" class="cat-card">
                         <div class="cat-icon icon-ai"><i class="fa-solid fa-brain"></i></div>
                         <h3>AI & Machine Learning</h3>
-                        <p>68 khóa học</p>
+                        <p>Deep Learning, NLP</p>
                     </a>
-                    <a href="#" class="cat-card">
+                    <a href="courses.php?category=Cloud" class="cat-card">
                         <div class="cat-icon icon-cloud"><i class="fa-solid fa-cloud"></i></div>
                         <h3>Điện toán đám mây</h3>
-                        <p>92 khóa học</p>
+                        <p>AWS, Azure, Docker</p>
                     </a>
                 </div>
             </div>
@@ -156,111 +159,61 @@
             <div class="container">
                 <div class="section-header flex-between">
                     <div>
-                        <h2>Khóa học nổi bật</h2>
-                        <p>Được tuyển chọn kỹ lưỡng bởi các chuyên gia</p>
+                        <h2>Khóa học mới nhất</h2>
+                        <p>Cập nhật kiến thức mới nhất mỗi ngày</p>
                     </div>
                     <a href="courses.php" class="view-all-btn">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
                 <div class="course-grid">
-                    <div class="course-card">
-                        <div class="course-thumb">
-                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80" alt="Web Dev">
-                            <span class="badge badge-beginner">Người mới</span>
-                        </div>
-                        <div class="course-body">
-                            <div class="course-cat">Lập trình Web</div>
-                            <h3 class="course-title"><a href="#">Fullstack Web Development Bootcamp 2025</a></h3>
-                            <div class="course-instructor">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
-                                <span>Nguyễn Văn A</span>
-                            </div>
-                            <div class="course-rating">
-                                <span class="rating-val">4.8</span>
-                                <div class="stars">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <?php if ($result_featured->num_rows > 0): ?>
+                        <?php while($row = $result_featured->fetch_assoc()): ?>
+                            <div class="course-card">
+                                <div class="course-thumb">
+                                    <img src="<?= get_course_image($row['thumbnail'], $row['category']) ?>" alt="<?= htmlspecialchars($row['title']) ?>">
+                                    <span class="badge badge-beginner">Mới</span>
                                 </div>
-                                <span class="rating-count">(12,450)</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-meta">
-                                    <span><i class="fa-regular fa-clock"></i> 52h</span>
-                                    <span><i class="fa-solid fa-video"></i> 140 bài</span>
+                                <div class="course-body">
+                                    <div class="course-cat"><?= htmlspecialchars($row['category']) ?></div>
+                                    
+                                    <h3 class="course-title">
+                                        <a href="course_detail.php?id=<?= $row['course_id'] ?>">
+                                            <?= htmlspecialchars($row['title']) ?>
+                                        </a>
+                                    </h3>
+                                    
+                                    <div class="course-instructor">
+                                        <img src="https://ui-avatars.com/api/?name=Edu+Tech&background=random" alt="Instructor">
+                                        <span>EduTech Team</span>
+                                    </div>
+                                    
+                                    <div class="course-rating">
+                                        <span class="rating-val">5.0</span>
+                                        <div class="stars">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(Mới)</span>
+                                    </div>
+                                    
+                                    <div class="course-footer">
+                                        <div class="course-meta">
+                                            <span><i class="fa-regular fa-clock"></i> Online</span>
+                                            <span><i class="fa-solid fa-video"></i> Video</span>
+                                        </div>
+                                        <div class="course-price">
+                                            <?= format_currency($row['price']) ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="course-price">499.000đ</div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="course-card">
-                        <div class="course-thumb">
-                            <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&q=80" alt="Data Science">
-                            <span class="badge badge-intermediate">Trung cấp</span>
-                        </div>
-                        <div class="course-body">
-                            <div class="course-cat">Data Science</div>
-                            <h3 class="course-title"><a href="#">Data Science & Machine Learning Masterclass</a></h3>
-                            <div class="course-instructor">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
-                                <span>Trần Thị B</span>
-                            </div>
-                            <div class="course-rating">
-                                <span class="rating-val">4.9</span>
-                                <div class="stars">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="rating-count">(8,920)</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-meta">
-                                    <span><i class="fa-regular fa-clock"></i> 68h</span>
-                                    <span><i class="fa-solid fa-video"></i> 210 bài</span>
-                                </div>
-                                <div class="course-price">599.000đ</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="course-card">
-                        <div class="course-thumb">
-                            <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80" alt="Cyber">
-                            <span class="badge badge-advanced">Nâng cao</span>
-                        </div>
-                        <div class="course-body">
-                            <div class="course-cat">Cybersecurity</div>
-                            <h3 class="course-title"><a href="#">Ethical Hacking & Bảo mật Chuyên nghiệp</a></h3>
-                            <div class="course-instructor">
-                                <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="User">
-                                <span>Lê Hoàng C</span>
-                            </div>
-                            <div class="course-rating">
-                                <span class="rating-val">4.7</span>
-                                <div class="stars">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star-half-stroke"></i>
-                                </div>
-                                <span class="rating-count">(6,540)</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-meta">
-                                    <span><i class="fa-regular fa-clock"></i> 45h</span>
-                                    <span><i class="fa-solid fa-video"></i> 98 bài</span>
-                                </div>
-                                <div class="course-price">650.000đ</div>
-                            </div>
-                        </div>
-                    </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p style="grid-column: 1/-1; text-align: center;">Chưa có khóa học nào được xuất bản.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
@@ -271,7 +224,11 @@
                     <h2>Bắt đầu hành trình học tập ngay hôm nay</h2>
                     <p>Tham gia cộng đồng học tập và bắt đầu làm chủ các kỹ năng công nghệ mới nhất.</p>
                     <div class="cta-buttons">
-                        <a href="register.php" class="btn btn-white">Đăng ký miễn phí</a>
+                        <?php if (!isset($_SESSION['user_id'])): ?>
+                            <a href="register.php" class="btn btn-white">Đăng ký miễn phí</a>
+                        <?php else: ?>
+                            <a href="student/my_courses.php" class="btn btn-white">Vào bàn học</a>
+                        <?php endif; ?>
                         <a href="courses.php" class="btn btn-outline-white">Xem lộ trình</a>
                     </div>
                 </div>
@@ -280,8 +237,7 @@
 
     </main>
 
-    <?php require 'src/templates/footer.php'; ?>
+    <?php require 'includes/footer.php'; ?>
 
-    <script src="public/js/main.js?v=<?php echo filemtime('public/js/main.js'); ?>"></script>
 </body>
 </html>

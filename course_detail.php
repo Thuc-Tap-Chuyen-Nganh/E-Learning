@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'src/core/db_connect.php';
+require_once 'config/config.php';
 
 // 1. LẤY ID KHÓA HỌC TỪ URL
 if (!isset($_GET['id'])) {
@@ -53,25 +53,6 @@ while ($chap = $chapters_query->fetch_assoc()) {
     $chap['lessons'] = $lessons;
     $chapters_data[] = $chap;
 }
-
-// Helper tính giờ phút
-function format_total_time($minutes) {
-    if ($minutes < 60) return $minutes . " phút";
-    $h = floor($minutes / 60);
-    $m = $minutes % 60;
-    return "{$h} giờ {$m} phút";
-}
-
-// Helper lấy ảnh (Copy từ courses.php để đồng bộ)
-function get_course_image($category) {
-    $cat = strtolower($category);
-    if (strpos($cat, 'web') !== false) return 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80';
-    if (strpos($cat, 'data') !== false) return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80';
-    if (strpos($cat, 'design') !== false) return 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80';
-    if (strpos($cat, 'mobile') !== false) return 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&q=80';
-    if (strpos($cat, 'security') !== false) return 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80';
-    return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80';
-}
 ?>
 
 <!DOCTYPE html>
@@ -86,12 +67,12 @@ function get_course_image($category) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="public/css/index.css?v=<?= filemtime('public/css/index.css') ?>">
-    <link rel="stylesheet" href="public/css/course_detail.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="assets/css/index.css?v=<?= filemtime('assets/css/index.css') ?>">
+    <link rel="stylesheet" href="assets/css/course_detail.css?v=<?= time() ?>">
 </head>
 <body>
 
-    <?php require 'src/templates/header.php'; ?>
+    <?php require 'includes/header.php'; ?>
 
     <main>
         <section class="course-hero">
@@ -152,7 +133,7 @@ function get_course_image($category) {
                         <div class="curriculum-stats">
                             <span><?php echo count($chapters_data); ?> Chương</span> • 
                             <span><?php echo $total_lessons; ?> Bài học</span> • 
-                            <span>Tổng thời lượng <?php echo format_total_time($total_seconds); ?></span>
+                            <span>Tổng thời lượng <?php echo format_time($total_seconds); ?></span>
                         </div>
 
                         <div class="accordion">
@@ -237,7 +218,7 @@ function get_course_image($category) {
                 <div class="course-sidebar-wrapper">
                     <div class="course-sidebar">
                         <div class="preview-video">
-                            <img src="<?php echo get_course_image($course['category']); ?>" alt="Course Preview">
+                            <img src="<?php echo get_course_image($course['thumbnail'], $course['category']); ?>" alt="Course Preview">
                             <div class="play-btn"><i class="fa-solid fa-play"></i></div>
                             <div class="preview-text">Xem giới thiệu</div>
                         </div>
@@ -257,21 +238,23 @@ function get_course_image($category) {
                                 <a href="student/learning.php?course_id=<?php echo $course_id; ?>" class="btn btn-primary btn-full" style="background: #16a34a;">
                                     <i class="fa-solid fa-play"></i> Vào học ngay
                                 </a>
-                            <?php elseif (isset($_SESSION['user_id'])): ?>
-                                <a href="src/handlers/enroll_handler.php?course_id=<?php echo $course_id; ?>" class="btn btn-primary btn-full">
-                                    Đăng ký ngay
-                                </a>
                             <?php else: ?>
-                                <a href="src/handlers/enroll_handler.php?course_id=<?php echo $course_id; ?>" class="btn btn-primary btn-full">
-                                    Đăng ký ngay
-                                </a>
+                                <?php if ($course['price'] == 0): ?>
+                                    <a href="<?= BASE_URL ?>logic/student/enroll.php?course_id=<?= $course_id ?>" class="btn btn-primary btn-full">
+                                        Đăng ký miễn phí
+                                    </a>
+                                <?php else: ?>
+                                    <a href="checkout.php?course_id=<?= $course_id ?>" class="btn btn-primary btn-full">
+                                        Mua khóa học ngay
+                                    </a>
+                                <?php endif; ?>
                             <?php endif; ?>
                             <p class="guarantee">Đảm bảo chất lượng nội dung</p>
 
                             <div class="includes-box">
                                 <h4>Khóa học bao gồm:</h4>
                                 <ul>
-                                    <li><i class="fa-solid fa-video"></i> <?php echo format_total_time($total_seconds); ?> video bài giảng</li>
+                                    <li><i class="fa-solid fa-video"></i> <?php echo format_time($total_seconds); ?> video bài giảng</li>
                                     <li><i class="fa-solid fa-mobile-screen"></i> Truy cập trên Mobile</li>
                                     <li><i class="fa-solid fa-infinity"></i> Truy cập trọn đời</li>
                                 </ul>
@@ -284,7 +267,7 @@ function get_course_image($category) {
         </section>
     </main>
 
-    <?php require 'src/templates/footer.php'; ?>
+    <?php require 'includes/footer.php'; ?>
 
     <script>
         function toggleAccordion(header) {

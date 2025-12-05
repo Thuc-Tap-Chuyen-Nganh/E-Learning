@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../src/core/db_connect.php';
+require_once '../config/config.php';
 
 // 1. KIỂM TRA ĐĂNG NHẬP
 if (!isset($_SESSION['user_id'])) {
@@ -52,35 +52,16 @@ while ($row = $result->fetch_assoc()) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../public/css/index.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../public/css/student_dashboard.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/index.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/student_dashboard.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
-    <?php require '../src/templates/header.php'; ?>
+    <?php require '../includes/header.php'; ?>
 
     <div class="student-layout container">
         
-        <aside class="student-sidebar">
-            <div class="user-widget">
-                <div class="user-avatar-large">
-                    <span><?php echo $user_initial; ?></span> 
-                </div>
-                <div class="user-info">
-                    <h3><?php echo htmlspecialchars($username); ?></h3>
-                    <p><?php echo htmlspecialchars($email); ?></p>
-                </div>
-            </div>
-
-            <nav class="student-menu">
-                <ul>
-                    <li><a href="my_courses.php"><i class="fa-solid fa-book-open"></i> Khóa học của tôi</a></li>
-                    <li><a href="progress.php"><i class="fa-solid fa-chart-simple"></i> Tiến độ học tập</a></li>
-                    <li><a href="certificates.php" class="active"><i class="fa-solid fa-certificate"></i> Chứng chỉ</a></li>
-                    <li><a href="profile.php"><i class="fa-regular fa-user"></i> Hồ sơ cá nhân</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php require '../includes/student_sidebar.php'; ?>
 
         <main class="student-content">
             

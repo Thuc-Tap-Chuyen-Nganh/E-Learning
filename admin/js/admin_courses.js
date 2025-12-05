@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const formData = new FormData();
         formData.append('id', courseIdToDelete);
 
-        fetch('../src/admin_handlers/delete_course_handler.php', {
+        fetch('../logic/admin/course_delete.php', {
             method: 'POST',
             body: formData
         })

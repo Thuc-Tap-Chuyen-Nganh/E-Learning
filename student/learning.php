@@ -1,7 +1,6 @@
 <?php
-// student/learning.php
 session_start();
-require '../src/core/db_connect.php';
+require_once '../config/config.php';
 
 // 1. KIỂM TRA ĐĂNG NHẬP
 if (!isset($_SESSION['user_id'])) {
@@ -120,7 +119,7 @@ $current_progress = $enroll_query->fetch_assoc()['progress'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="stylesheet" href="../public/css/learning.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/learning.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -370,7 +369,7 @@ $current_progress = $enroll_query->fetch_assoc()['progress'];
 
             const formData = new FormData(document.getElementById('quizForm'));
 
-            fetch('../src/student_handlers/submit_quiz.php', {
+            fetch('../logic/student/quiz_submit.php', {
                 method: 'POST',
                 body: formData
             })
@@ -479,7 +478,7 @@ $current_progress = $enroll_query->fetch_assoc()['progress'];
             formData.append('lesson_id', <?php echo $current_lesson_id; ?>);
             formData.append('course_id', <?php echo $course_id; ?>);
 
-            fetch('../src/student_handlers/mark_completed.php', {
+            fetch('../logic/student/progress_mark.php', {
                 method: 'POST',
                 body: formData
             })

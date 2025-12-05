@@ -1,3 +1,6 @@
+<?php
+require_once '../config/config.php'; 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -11,7 +14,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css?v=<?= filemtime('css/index.css') ?>">
 </head>
 <body>
 
@@ -23,7 +26,7 @@
         <h1>EduTech Admin</h1>
         <p class="subtitle">Đăng nhập vào hệ thống quản trị</p>
 
-        <form action="../src/admin_handlers/admin_login_handler.php" method="POST"> <div class="form-group">
+        <form action="<?= BASE_URL ?>/logic/admin/admin_login.php" method="POST"> <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="admin@elearning.com" required/>
             </div>

@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('chapter_id', chapterIdToDelete);
 
             // Lưu ý: Đường dẫn này tính từ file PHP gọi nó (admin_course_details.php)
-            fetch('../src/admin_handlers/delete_chapter_handler.php', {
+            fetch('../logic/admin/chapter_delete.php', {
                 method: 'POST',
                 body: formData
             })

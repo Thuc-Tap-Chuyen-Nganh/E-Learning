@@ -1,5 +1,5 @@
 <?php
-require "src/core/db_connect.php";
+require_once 'config/config.php';
 
 $token = $_GET['token']??'';
 $error_message = "";
@@ -37,12 +37,12 @@ if (empty($token)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt lại mật khẩu | EduTech</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="public/css/login.css">
+  <link rel="stylesheet" href="assets/css/login.css?v=<?= filemtime('assets/css/login.css') ?>">
 </head>
 <body>
   <div class="card">
     <?php if ($show_form): ?>
-    <form action="src/handlers/reset_handler.php" method="post" id="resetForm">
+    <form action="<?= BASE_URL ?>logic/auth/reset_password.php" method="post" id="resetForm">
       <div class="header">
         <h1><i class="fas fa-unlock-alt"></i> Đặt mật khẩu mới</h1>
         <p>Vui lòng nhập mật khẩu mới của bạn</p>
@@ -81,6 +81,6 @@ if (empty($token)) {
       </div>
     <?php endif; ?>
   </div>
-  <script src="public/js/validate.js"></script>
+  <script src="assets/js/validate.js"></script>
 </body>
 </html>

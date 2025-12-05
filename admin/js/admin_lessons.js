@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData();
             formData.append('lesson_id', lessonIdToDelete);
 
-            fetch('../src/admin_handlers/delete_lesson_handler.php', {
+            fetch('../logic/admin/lesson_delete.php', {
                 method: 'POST',
                 body: formData
             })

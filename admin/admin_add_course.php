@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once '../config/config.php'; 
+
 // Bảo vệ trang
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
@@ -17,11 +19,11 @@ if (!isset($_SESSION['admin_id'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/admin_styles.css"> 
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>"> 
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -33,7 +35,7 @@ if (!isset($_SESSION['admin_id'])) {
 
         <main class="main-content">
             <div class="form-container">
-                <form action="../src/admin_handlers/add_course_handler.php" method="POST" class="course-form">
+                <form action="<?= BASE_URL ?>/logic/admin/course_add.php" method="POST" class="course-form" enctype="multipart/form-data">
                     
                     <div class="form-group">
                         <label for="title">Tên khóa học</label>
@@ -43,6 +45,12 @@ if (!isset($_SESSION['admin_id'])) {
                     <div class="form-group">
                         <label for="description">Mô tả</label>
                         <textarea id="description" name="description" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="thumbnail">Ảnh bìa khóa học</label>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+                        <small style="color: #666;">Hỗ trợ: JPG, PNG, GIF (Tối đa 2MB)</small>
                     </div>
 
                     <div class="form-group form-group-small">

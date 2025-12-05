@@ -1,3 +1,6 @@
+<?php
+require_once 'config/config.php'; 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -5,11 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quên mật khẩu | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="public/css/forgot.css">
+  <link rel="stylesheet" href="assets/css/forgot.css?v=<?= filemtime('assets/css/forgot.css') ?>">
 </head>
 <body>
   <div class="card">
-    <form action="src/handlers/forgot_handler.php" method="post" id="forgotForm">
+    <form action="<?= BASE_URL ?>logic/auth/forgot_password.php" method="post" id="forgotForm">
       <div class="header">
         <h1><i class="fas fa-key"></i> Quên mật khẩu?</h1>
         <p>Nhập email để nhận liên kết đặt lại mật khẩu</p>
@@ -46,6 +49,6 @@
       </div>
     </form>
   </div>
-  <script src="public/js/validate.js"></script>
+  <script src="assets/js/validate.js"></script>
 </body>
 </html>

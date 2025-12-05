@@ -1,8 +1,6 @@
 <?php
-// admin/admin_course_details.php
-
 session_start();
-require '../src/core/db_connect.php'; // Gọi CSDL
+require_once '../config/config.php'; 
 
 // === BẢO VỆ ===
 if (!isset($_SESSION['admin_id'])) {
@@ -82,11 +80,11 @@ $total_duration_formatted = format_duration($total_minutes);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="stylesheet" href="css/admin_styles.css">
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -221,7 +219,7 @@ $total_duration_formatted = format_duration($total_minutes);
                     <h3>Thêm chương mới</h3>
                 </div>
                 
-                <form action="../src/admin_handlers/add_chapter_handler.php" method="POST">
+                <form action="<?= BASE_URL ?>logic/admin/chapter_add.php" method="POST">
                     
                     <input type="hidden" name="course_id" value="<?php echo $course_id; ?>">
 
@@ -273,7 +271,7 @@ $total_duration_formatted = format_duration($total_minutes);
                 <h3>Cập nhật chương</h3>
             </div>
             
-            <form action="../src/admin_handlers/edit_chapter_handler.php" method="POST">
+            <form action="<?= BASE_URL ?>logic/admin/chapter_edit.php" method="POST">
                 <input type="hidden" name="chapter_id" id="edit_chapter_id">
                 <input type="hidden" name="course_id" value="<?php echo $course_id; ?>">
 
@@ -302,7 +300,7 @@ $total_duration_formatted = format_duration($total_minutes);
         </div>
     </div>
 
-    <script src="js/admin_chapters.js"></script>
+    <script src="js/admin_chapters.js?v=<?php echo filemtime('js/admin_chapters.js'); ?>"></script>
 
 </body>
 </html>

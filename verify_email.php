@@ -37,7 +37,7 @@
 </head>
 <body>
     <?php
-    require 'src/core/db_connect.php';
+    require_once 'config/config.php';
 
     // Lấy token từ URL
     if (!isset($_GET['token'])) {

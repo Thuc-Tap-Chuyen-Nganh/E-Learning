@@ -1,12 +1,10 @@
 <?php
-// admin/admin_edit_course.php
-
 session_start();
-require '../src/core/db_connect.php'; // Gọi $conn
+require_once '../config/config.php'; 
 
 // Bảo vệ trang
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -42,11 +40,11 @@ if (!$course) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/admin_styles.css"> 
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>"> 
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -58,7 +56,7 @@ if (!$course) {
 
         <main class="main-content">
             <div class="form-container">
-                <form action="../src/admin_handlers/edit_course_handler.php" method="POST" class="course-form">
+                <form action="<?= BASE_URL ?>/logic/admin/course_edit.php" method="POST" class="course-form" enctype="multipart/form-data">
                     
                     <input type="hidden" name="course_id" value="<?php echo $course['course_id']; ?>">
 
@@ -70,6 +68,19 @@ if (!$course) {
                     <div class="form-group">
                         <label for="description">Mô tả</label>
                         <textarea id="description" name="description" rows="5"><?php echo htmlspecialchars($course['description']); ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="thumbnail">Ảnh bìa khóa học</label>
+                        
+                        <?php if (!empty($course['thumbnail'])): ?>
+                            <div style="margin-bottom: 10px;">
+                                <img src="<?= BASE_URL . $course['thumbnail'] ?>" alt="Current Image" style="max-width: 200px; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
+                        <?php endif; ?>
+
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+                        <small style="color: #666;">Để trống nếu không muốn thay đổi ảnh.</small>
                     </div>
 
                     <div class="form-group form-group-small">

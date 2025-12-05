@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../src/core/db_connect.php'; 
+require_once '../config/config.php'; 
 
 // === BẢO VỆ SESSION ===
 if (!isset($_SESSION['admin_id'])) {
@@ -57,11 +57,11 @@ $result_lessons = $stmt_lessons->get_result();
     
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
-    <link rel="stylesheet" href="css/admin_styles.css">
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -194,7 +194,7 @@ $result_lessons = $stmt_lessons->get_result();
                 <h3>Thêm bài học mới</h3>
             </div>
             
-            <form action="../src/admin_handlers/add_lesson_handler.php" method="POST">
+            <form action="<?= BASE_URL ?>logic/admin/lesson_add.php" method="POST">
                 
                 <input type="hidden" name="chapter_id" value="<?php echo $chapter_id; ?>">
 
@@ -260,7 +260,7 @@ $result_lessons = $stmt_lessons->get_result();
                 <h3>Cập nhật bài học</h3>
             </div>
             
-            <form action="../src/admin_handlers/edit_lesson_handler.php" method="POST">
+            <form action="<?= BASE_URL ?>logic/admin/lesson_edit.php" method="POST">
                 <input type="hidden" name="lesson_id" id="edit_lesson_id">
                 <input type="hidden" name="chapter_id" value="<?php echo $chapter_id; ?>">
 
@@ -332,7 +332,7 @@ $result_lessons = $stmt_lessons->get_result();
     </div>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-    <script src="js/admin_lessons.js"></script>
+    <script src="js/admin_lessons.js?v=<?php echo filemtime('js/admin_lessons.js'); ?>"></script>
 
 </body>
 </html>

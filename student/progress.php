@@ -1,32 +1,71 @@
 <?php
 session_start();
-require_once '../src/core/db_connect.php';
+require_once '../config/config.php';
 
 // 1. KIỂM TRA ĐĂNG NHẬP
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
+    header("Location: " . BASE_URL . "login.php");
     exit();
 }
 
 $user_id = $_SESSION['user_id'];
 
-// 2. LẤY THÔNG TIN USER (Sidebar)
-$stmt_user = $conn->prepare("SELECT username, email FROM users WHERE user_id = ?");
-$stmt_user->bind_param("i", $user_id);
-$stmt_user->execute();
-$user_info = $stmt_user->get_result()->fetch_assoc();
-$username = $user_info['username'];
-$email = $user_info['email'];
-$user_initial = strtoupper(substr($username, 0, 2));
+// 2. XỬ LÝ DỮ LIỆU BIỂU ĐỒ (7 NGÀY QUA)
+// Khởi tạo mảng dữ liệu cho 7 ngày gần nhất (Mặc định là 0)
+$chart_labels = []; // Nhãn ngày (T2, T3...)
+$chart_data = [];   // Dữ liệu giờ học
+$week_map = [];     // Map trung gian để gán dữ liệu
 
-// 3. LẤY DỮ LIỆU TIẾN ĐỘ THẬT
-// Lưu ý: Chúng ta cần tính tiến độ dựa trên bảng enrollments
+// Tạo khung 7 ngày
+for ($i = 6; $i >= 0; $i--) {
+    $timestamp = strtotime("-$i days");
+    $date_key = date('Y-m-d', $timestamp);
+    $label = date('d/m', $timestamp); // Ví dụ: 05/12
+    
+    $chart_labels[] = $label;
+    $week_map[$date_key] = 0;
+}
+
+// Truy vấn tổng thời gian học theo ngày
+$sql_chart = "SELECT 
+                DATE(lp.completed_at) as study_date, 
+                SUM(l.duration) as total_minutes
+              FROM lesson_progress lp
+              JOIN lessons l ON lp.lesson_id = l.lesson_id
+              WHERE lp.user_id = ? 
+              AND lp.completed_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+              GROUP BY DATE(lp.completed_at)";
+
+$stmt_chart = $conn->prepare($sql_chart);
+$stmt_chart->bind_param("i", $user_id);
+$stmt_chart->execute();
+$res_chart = $stmt_chart->get_result();
+
+while ($row = $res_chart->fetch_assoc()) {
+    $date = $row['study_date'];
+    // Quy đổi phút sang giờ (làm tròn 1 số lẻ)
+    $hours = round($row['total_minutes'] / 60, 1);
+    if (isset($week_map[$date])) {
+        $week_map[$date] = $hours;
+    }
+}
+
+// Chuyển dữ liệu từ Map sang Array chuẩn để đưa vào Chart.js
+foreach ($week_map as $val) {
+    $chart_data[] = $val;
+}
+
+// Tính tổng giờ học trong tuần này
+$weekly_hours = array_sum($chart_data);
+
+
+// 3. LẤY DANH SÁCH KHÓA HỌC & TIẾN ĐỘ CHI TIẾT
 $sql = "SELECT 
             c.title, c.category, e.progress, e.enrolled_at
         FROM enrollments e
         JOIN courses c ON e.course_id = c.course_id
         WHERE e.user_id = ?
-        ORDER BY e.progress DESC";
+        ORDER BY e.enrolled_at DESC";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -35,23 +74,17 @@ $result = $stmt->get_result();
 
 $courses_data = [];
 $total_completed = 0;
-$total_progress = 0;
+$total_progress_sum = 0;
 $count = 0;
 
 while ($row = $result->fetch_assoc()) {
     $courses_data[] = $row;
-    // Coi như hoàn thành nếu progress = 100
-    if ($row['progress'] == 100) {
-        $total_completed++;
-    }
-    $total_progress += $row['progress'];
+    if ($row['progress'] == 100) $total_completed++;
+    $total_progress_sum += $row['progress'];
     $count++;
 }
 
-$avg_progress = $count > 0 ? round($total_progress / $count) : 0;
-
-// Giả lập dữ liệu biểu đồ (Vì chưa có bảng tracking log từng ngày)
-$chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
+$avg_progress = $count > 0 ? round($total_progress_sum / $count) : 0;
 ?>
 
 <!DOCTYPE html>
@@ -62,39 +95,19 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
     <title>Tiến độ học tập - EduTech</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../public/css/index.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="../public/css/student_dashboard.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/index.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../assets/css/student_dashboard.css?v=<?= time() ?>">
 </head>
 <body>
 
-    <?php require '../src/templates/header.php'; ?>
+    <?php require '../includes/header.php'; ?>
 
     <div class="student-layout container">
         
-        <aside class="student-sidebar">
-            <div class="user-widget">
-                <div class="user-avatar-large">
-                    <span><?php echo $user_initial; ?></span> 
-                </div>
-                <div class="user-info">
-                    <h3><?php echo htmlspecialchars($username); ?></h3>
-                    <p><?php echo htmlspecialchars($email); ?></p>
-                </div>
-            </div>
-
-            <nav class="student-menu">
-                <ul>
-                    <li><a href="my_courses.php"><i class="fa-solid fa-book-open"></i> Khóa học của tôi</a></li>
-                    <li><a href="progress.php" class="active"><i class="fa-solid fa-chart-simple"></i> Tiến độ học tập</a></li>
-                    <li><a href="certificates.php"><i class="fa-solid fa-certificate"></i> Chứng chỉ</a></li>
-                    <li><a href="profile.php"><i class="fa-regular fa-user"></i> Hồ sơ cá nhân</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <?php require '../includes/student_sidebar.php'; ?>
 
         <main class="student-content">
             
@@ -106,27 +119,28 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
                 <div class="stat-box">
                     <div class="stat-icon green"><i class="fa-solid fa-check-circle"></i></div>
                     <div>
-                        <h4><?php echo $total_completed; ?></h4>
+                        <h4><?= $total_completed ?></h4>
                         <p>Khóa đã xong</p>
                     </div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-icon blue"><i class="fa-solid fa-layer-group"></i></div>
                     <div>
-                        <h4><?php echo $count; ?></h4>
+                        <h4><?= $count ?></h4>
                         <p>Đang tham gia</p>
                     </div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-icon purple"><i class="fa-solid fa-hourglass-half"></i></div>
                     <div>
-                        <h4>--</h4> <p>Giờ học (Tuần)</p>
+                        <h4><?= $weekly_hours ?>h</h4> 
+                        <p>Giờ học (7 ngày)</p>
                     </div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-icon orange"><i class="fa-solid fa-fire"></i></div>
                     <div>
-                        <h4><?php echo $avg_progress; ?>%</h4>
+                        <h4><?= $avg_progress ?>%</h4>
                         <p>Tiến độ TB</p>
                     </div>
                 </div>
@@ -134,7 +148,7 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
 
             <div class="chart-section">
                 <div class="chart-header">
-                    <h3>Hoạt động học tập (Giả lập)</h3>
+                    <h3>Hoạt động học tập</h3>
                     <select class="chart-filter">
                         <option>7 ngày qua</option>
                     </select>
@@ -153,13 +167,13 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
                     <?php foreach ($courses_data as $course): ?>
                         <div class="progress-item">
                             <div class="prog-info">
-                                <h4 class="prog-title"><?php echo htmlspecialchars($course['title']); ?></h4>
-                                <span class="prog-cat"><?php echo htmlspecialchars($course['category']); ?></span>
+                                <h4 class="prog-title"><?= htmlspecialchars($course['title']) ?></h4>
+                                <span class="prog-cat"><?= htmlspecialchars($course['category']) ?></span>
                             </div>
                             
                             <div class="prog-bar-wrapper">
                                 <div class="prog-stats">
-                                    <span><?php echo $course['progress']; ?>% Hoàn thành</span>
+                                    <span><?= $course['progress'] ?>% Hoàn thành</span>
                                     <?php if ($course['progress'] == 100): ?>
                                         <span class="status-tag completed"><i class="fa-solid fa-check"></i> Xong</span>
                                     <?php else: ?>
@@ -167,13 +181,15 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
                                     <?php endif; ?>
                                 </div>
                                 <div class="progress-track">
-                                    <div class="progress-bar" style="width: <?php echo $course['progress']; ?>%"></div>
+                                    <div class="progress-bar" style="width: <?= $course['progress'] ?>%"></div>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="text-align: center; color: #666;">Bạn chưa đăng ký khóa học nào.</p>
+                    <div style="text-align: center; padding: 30px; color: #666; width: 100%;">
+                        Bạn chưa đăng ký khóa học nào.
+                    </div>
                 <?php endif; ?>
             </div>
 
@@ -183,20 +199,23 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Cấu hình biểu đồ
         const ctx = document.getElementById('learningChart').getContext('2d');
         
         let gradient = ctx.createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(142, 45, 226, 0.5)'); 
         gradient.addColorStop(1, 'rgba(142, 45, 226, 0.05)'); 
 
+        // Dữ liệu từ PHP
+        const labels = <?= json_encode($chart_labels) ?>;
+        const dataPoints = <?= json_encode($chart_data) ?>;
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                labels: labels,
                 datasets: [{
                     label: 'Giờ học',
-                    data: <?php echo json_encode($chart_data); ?>,
+                    data: dataPoints,
                     borderColor: '#8e2de2',
                     backgroundColor: gradient,
                     borderWidth: 2,
@@ -212,7 +231,11 @@ $chart_data = [2.5, 3.0, 1.5, 4.0, 2.0, 5.0, 3.5]; // Giờ học 7 ngày qua
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { borderDash: [5, 5] },
+                        ticks: { stepSize: 0.5 } 
+                    },
                     x: { grid: { display: false } }
                 }
             }

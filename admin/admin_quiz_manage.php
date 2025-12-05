@@ -1,7 +1,6 @@
 <?php
-// admin/admin_quiz_manage.php
 session_start();
-require '../src/core/db_connect.php';
+require_once '../config/config.php'; 
 
 // Bảo vệ
 if (!isset($_SESSION['admin_id'])) {
@@ -42,7 +41,7 @@ $questions = $stmt_questions->get_result();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="stylesheet" href="css/admin_styles.css">
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
     
     <style>
         /* Quiz Specific Styles */
@@ -185,7 +184,7 @@ $questions = $stmt_questions->get_result();
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -228,7 +227,7 @@ $questions = $stmt_questions->get_result();
                                             <i class="fa-solid fa-pencil"></i>
                                         </button>
 
-                                        <form action="../src/admin_handlers/delete_question_handler.php" method="POST" onsubmit="return confirm('Xóa câu hỏi này?');" style="display:inline;">
+                                        <form action="<?= BASE_URL ?>logic/admin/quiz_delete.php" method="POST" onsubmit="return confirm('Xóa câu hỏi này?');" style="display:inline;">
                                             <input type="hidden" name="question_id" value="<?php echo $q['question_id']; ?>">
                                             <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
                                             <button type="submit" class="btn-icon btn-delete" title="Xóa"><i class="fa-solid fa-trash"></i></button>
@@ -267,7 +266,7 @@ $questions = $stmt_questions->get_result();
                             <h4><i class="fa-solid fa-file-csv"></i> Nhập nhanh từ Excel/CSV</h4>
                             <p>Tải lên file .csv (UTF-8) để nhập nhiều câu hỏi cùng lúc.</p>
                             
-                            <form action="../src/admin_handlers/import_quiz_handler.php" method="POST" enctype="multipart/form-data">
+                            <form action="<?= BASE_URL ?>/logic/admin/quiz_import.php" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
                                 <input type="file" name="quiz_file" accept=".csv" required style="width: 100%; margin-bottom: 10px; font-size: 13px;">
                                 <button type="submit" class="btn btn-secondary" style="width: 100%; background-color: #4f46e5; color: white; border: none;">
@@ -279,7 +278,7 @@ $questions = $stmt_questions->get_result();
                         <div class="add-box">
                             <h3><i class="fa-solid fa-plus-circle"></i> Thêm câu hỏi mới</h3>
                             
-                            <form action="../src/admin_handlers/add_question_handler.php" method="POST">
+                            <form action="<?= BASE_URL ?>logic/admin/quiz_add.php" method="POST">
                                 <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
                                 
                                 <div class="form-group">
@@ -331,7 +330,7 @@ $questions = $stmt_questions->get_result();
                 <h3>Cập nhật câu hỏi</h3>
             </div>
             
-            <form action="../src/admin_handlers/edit_question_handler.php" method="POST">
+            <form action="<?= BASE_URL ?>logic/admin/quiz_edit.php" method="POST">
                 <input type="hidden" name="question_id" id="edit_q_id">
                 <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
 

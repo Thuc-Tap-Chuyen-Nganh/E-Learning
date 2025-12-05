@@ -1,7 +1,6 @@
 <?php
-// admin/admin_students.php
 session_start();
-require '../src/core/db_connect.php';
+require_once '../config/config.php'; 
 
 // Bảo vệ trang
 if (!isset($_SESSION['admin_id'])) {
@@ -53,11 +52,11 @@ function get_status_badge($status) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/admin_styles.css">
+    <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
 </head>
 <body>
 
-    <?php include 'templates/sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="main-header">
@@ -65,9 +64,6 @@ function get_status_badge($status) {
                 <h1>Quản lý học viên</h1>
                 <p>Quản lý và theo dõi thông tin học viên</p>
             </div>
-            <a href="../src/handlers/admin_logout.php" class="logout-btn">
-                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
-            </a>
         </header>
 
         <main class="main-content">
@@ -141,12 +137,12 @@ function get_status_badge($status) {
                                     <td><?php echo get_status_badge($row['status']); ?></td>
                                     <td>
                                         <?php if ($row['status'] == 'active'): ?>
-                                            <a href="../src/admin_handlers/toggle_user_status.php?id=<?php echo $row['user_id']; ?>&action=ban" 
+                                            <a href="<?= BASE_URL ?>/logic/admin/toggle_user_status.php?id=<?php echo $row['user_id']; ?>&action=ban" 
                                                class="btn-icon btn-delete" title="Khóa tài khoản" onclick="return confirm('Bạn có chắc muốn khóa tài khoản này?');">
                                                 <i class="fa-solid fa-lock"></i>
                                             </a>
                                         <?php else: ?>
-                                            <a href="../src/admin_handlers/toggle_user_status.php?id=<?php echo $row['user_id']; ?>&action=active" 
+                                            <a href="<?= BASE_URL ?>/logic/admin/toggle_user_status.php?id=<?php echo $row['user_id']; ?>&action=active" 
                                                class="btn-icon btn-edit" title="Mở khóa" onclick="return confirm('Mở khóa tài khoản này?');">
                                                 <i class="fa-solid fa-lock-open"></i>
                                             </a>

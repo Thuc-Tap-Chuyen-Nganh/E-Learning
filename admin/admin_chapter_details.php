@@ -163,10 +163,6 @@ $result_lessons = $stmt_lessons->get_result();
                                         <a href="admin_quiz_manage.php?lesson_id=<?php echo $lesson['lesson_id']; ?>" class="btn-action-pill">
                                             Câu hỏi <i class="fa-solid fa-chevron-right"></i>
                                         </a>
-                                    <?php else: ?>
-                                        <a href="#" class="btn-action-text">
-                                            Xem chi tiết <i class="fa-solid fa-chevron-right"></i>
-                                        </a>
                                     <?php endif; ?>
                                 </div>
 
@@ -235,6 +231,15 @@ $result_lessons = $stmt_lessons->get_result();
 
                     <div class="form-group" id="group_content_text" style="display: none;">
                         <label for="content_text">Nội dung bài học</label>
+
+                        <div style="margin-bottom: 10px;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('import_word_add').click()">
+                                <i class="fa-solid fa-file-word" style="color: #2b579a;"></i> Nhập từ Word (.docx)
+                            </button>
+                            <input type="file" id="import_word_add" accept=".docx" style="display: none;" onchange="importWordToEditor(this, 'add')">
+                            <span id="import_status_add" style="font-size: 12px; margin-left: 10px; color: #666;"></span>
+                        </div>
+                        
                         <textarea id="content_text" name="content_text"></textarea>
                     </div>
 
@@ -297,6 +302,15 @@ $result_lessons = $stmt_lessons->get_result();
 
                     <div class="form-group" id="edit_group_text" style="display: none;">
                         <label>Nội dung bài học</label>
+
+                        <div style="margin-bottom: 10px;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('import_word_edit').click()">
+                                <i class="fa-solid fa-file-word" style="color: #2b579a;"></i> Nhập từ Word (.docx)
+                            </button>
+                            <input type="file" id="import_word_edit" accept=".docx" style="display: none;" onchange="importWordToEditor(this, 'edit')">
+                            <span id="import_status_edit" style="font-size: 12px; margin-left: 10px; color: #666;"></span>
+                        </div>
+
                         <textarea id="edit_content_text" name="content_text"></textarea>
                     </div>
 

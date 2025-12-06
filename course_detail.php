@@ -53,6 +53,15 @@ while ($chap = $chapters_query->fetch_assoc()) {
     $chap['lessons'] = $lessons;
     $chapters_data[] = $chap;
 }
+
+// 5. LẤY DANH SÁCH REVIEW
+$reviews_query = $conn->query("
+    SELECT r.*, u.username, u.avatar 
+    FROM reviews r 
+    JOIN users u ON r.user_id = u.user_id 
+    WHERE r.course_id = $course_id 
+    ORDER BY r.created_at DESC
+");
 ?>
 
 <!DOCTYPE html>
@@ -95,11 +104,17 @@ while ($chap = $chapters_query->fetch_assoc()) {
                     <div class="course-meta-row">
                         <span class="badge-bestseller">Phổ biến</span>
                         <div class="rating-stars">
-                            <span class="rating-number">5.0</span>
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <span class="rating-count">(Mới)</span>
+                            <span class="rating-number"><?= $course['avg_rating'] ?? '5.0' ?></span>
+                            <div class="stars" style="color: #f59e0b; margin-top: 5px;">
+                                <?php
+                                    $stars = round($course['avg_rating'] ?? 0);
+                                    for($i=1; $i<=5; $i++) {
+                                        echo $i <= $stars ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
+                                    }
+                                ?>
+                            </div>
                         </div>
-                        <span class="students-count"><i class="fa-solid fa-user-group"></i> Dành cho mọi người</span>
+                        <span class="students-count"><i class="fa-solid fa-user-group"></i></span>
                     </div>
 
                     <div class="course-instructor-info">
@@ -188,7 +203,7 @@ while ($chap = $chapters_query->fetch_assoc()) {
                                 <h4><a href="#">EduTech Team</a></h4>
                                 <p class="job-title">Đội ngũ chuyên gia công nghệ</p>
                                 <div class="instructor-stats">
-                                    <span><i class="fa-solid fa-star"></i> 5.0 Xếp hạng</span>
+                                    <span><i class="fa-solid fa-star"></i> 4.9 Xếp hạng</span>
                                     <span><i class="fa-solid fa-play-circle"></i> Nhiều Khóa học</span>
                                 </div>
                                 <p class="bio">
@@ -198,18 +213,68 @@ while ($chap = $chapters_query->fetch_assoc()) {
                         </div>
                     </div>
 
-                    <div class="reviews-section">
-                        <h3>Đánh giá từ học viên</h3>
-                        <div class="review-item">
-                            <div class="review-user">
-                                <div class="user-avatar">HV</div>
-                                <div class="user-info">
-                                    <h5>Học viên EduTech</h5>
-                                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <div class="reviews-section" id="reviews">
+                        <h3>Đánh giá từ học viên (<?= $course['review_count'] ?? 0 ?>)</h3>
+                        
+                        <div class="review-summary" style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; background: #f9fafb; padding: 20px; border-radius: 12px;">
+                            <div class="big-rating" style="text-align: center;">
+                                <div style="font-size: 48px; font-weight: 800; color: #b45309; line-height: 1;"><?= $course['avg_rating'] ?? '5.0' ?></div>
+                                <div class="stars" style="color: #f59e0b; margin-top: 5px;">
+                                    <?php
+                                        $stars = round($course['avg_rating'] ?? 0);
+                                        for($i=1; $i<=5; $i++) {
+                                            echo $i <= $stars ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
+                                        }
+                                    ?>
                                 </div>
-                                <span class="review-time">Gần đây</span>
+                                <div style="font-size: 13px; color: #666; margin-top: 5px;">Điểm trung bình</div>
                             </div>
-                            <p class="review-text">Khóa học rất bổ ích, nội dung sát thực tế.</p>
+                            
+                            <?php if ($is_enrolled): ?>
+                                <div style="flex-grow: 1; border-left: 1px solid #ddd; padding-left: 20px;">
+                                    <h4 style="margin-bottom: 10px;">Viết đánh giá của bạn</h4>
+                                    <form action="<?= BASE_URL ?>logic/student/submit_review.php" method="POST">
+                                        <input type="hidden" name="course_id" value="<?= $course_id ?>">
+                                        
+                                        <div class="rating-input" style="margin-bottom: 10px;">
+                                            <div class="star-rating">
+                                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 sao"><i class="fa-solid fa-star"></i></label>
+                                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 sao"><i class="fa-solid fa-star"></i></label>
+                                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 sao"><i class="fa-solid fa-star"></i></label>
+                                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 sao"><i class="fa-solid fa-star"></i></label>
+                                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 sao"><i class="fa-solid fa-star"></i></label>
+                                            </div>
+                                        </div>
+                                        
+                                        <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px;"></textarea>
+                                        <button type="submit" class="btn btn-primary" style="padding: 8px 20px; font-size: 14px;">Gửi đánh giá</button>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="review-list">
+                            <?php if ($reviews_query->num_rows > 0): ?>
+                                <?php while ($rv = $reviews_query->fetch_assoc()): 
+                                    $rv_avatar = !empty($rv['avatar']) && file_exists(BASE_PATH.$rv['avatar']) ? BASE_URL.$rv['avatar'] : "https://ui-avatars.com/api/?name=".urlencode($rv['username']);
+                                ?>
+                                    <div class="review-item">
+                                        <div class="review-user">
+                                            <img src="<?= $rv_avatar ?>" class="user-avatar" style="object-fit:cover;">
+                                            <div class="user-info">
+                                                <h5 style="margin: 0;"><?= htmlspecialchars($rv['username']) ?></h5>
+                                                <div class="stars" style="font-size: 12px;">
+                                                    <?php for($k=1; $k<=5; $k++) echo $k <= $rv['rating'] ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star" style="color:#ddd;"></i>'; ?>
+                                                </div>
+                                            </div>
+                                            <span class="review-time"><?= date('d/m/Y', strtotime($rv['created_at'])) ?></span>
+                                        </div>
+                                        <p class="review-text" style="margin-top: 10px; color: #444;"><?= nl2br(htmlspecialchars($rv['comment'])) ?></p>
+                                    </div>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <p style="color: #666; font-style: italic;">Chưa có đánh giá nào. Hãy là người đầu tiên!</p>
+                            <?php endif; ?>
                         </div>
                     </div>
 

@@ -196,6 +196,8 @@ $avg_progress = $count > 0 ? round($total_progress_sum / $count) : 0;
         </main>
     </div>
 
+    <?php require '../includes/footer.php'; ?>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>

@@ -189,7 +189,6 @@ $total_duration_formatted = format_duration($total_minutes);
                                     <button class="btn-icon btn-edit edit-chapter-btn" 
                                             data-id="<?php echo $chapter['chapter_id']; ?>"
                                             data-title="<?php echo htmlspecialchars($chapter['title']); ?>"
-                                            data-desc="<?php echo htmlspecialchars($chapter['description']); ?>"
                                             data-order="<?php echo $chapter['sort_order']; ?>">
                                         <i class="fa-solid fa-pencil"></i>
                                     </button>
@@ -227,11 +226,6 @@ $total_duration_formatted = format_duration($total_minutes);
                         <div class="form-group">
                             <label for="chapter_title">Tên chương</label>
                             <input type="text" id="chapter_title" name="title" placeholder="Nhập tên chương" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="chapter_desc">Mô tả</label>
-                            <textarea id="chapter_desc" name="description" rows="3" placeholder="Mô tả ngắn về chương này..."></textarea>
                         </div>
 
                         <div class="form-group">
@@ -279,11 +273,6 @@ $total_duration_formatted = format_duration($total_minutes);
                     <div class="form-group">
                         <label for="edit_chapter_title">Tên chương</label>
                         <input type="text" id="edit_chapter_title" name="title" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="edit_chapter_desc">Mô tả</label>
-                        <textarea id="edit_chapter_desc" name="description" rows="3"></textarea>
                     </div>
 
                     <div class="form-group">

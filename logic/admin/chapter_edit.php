@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $chapter_id = $_POST['chapter_id'];
     $course_id = $_POST['course_id']; // Để redirect về đúng chỗ
     $title = $_POST['title'];
-    $description = $_POST['description'];
     $sort_order = $_POST['sort_order'];
 
     if (empty($title) || empty($chapter_id)) {
@@ -22,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Cập nhật CSDL
-    $stmt = $conn->prepare("UPDATE chapters SET title = ?, description = ?, sort_order = ? WHERE chapter_id = ?");
-    $stmt->bind_param("ssii", $title, $description, $sort_order, $chapter_id);
+    $stmt = $conn->prepare("UPDATE chapters SET title = ?, sort_order = ? WHERE chapter_id = ?");
+    $stmt->bind_param("sii", $title, $sort_order, $chapter_id);
 
     if ($stmt->execute()) {
         header("Location: " . BASE_URL . "admin/admin_course_details.php?course_id=$course_id&status=updated");

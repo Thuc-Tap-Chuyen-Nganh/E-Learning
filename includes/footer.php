@@ -1,7 +1,8 @@
 <?php
-// Kiểm tra lại logic đường dẫn giống header
 $in_student_folder = (basename(dirname($_SERVER['PHP_SELF'])) == 'student');
 $path = $in_student_folder ? '../' : '';
+
+require_once $path . 'config/config.php'; 
 ?>
 
 <footer class="footer">
@@ -44,4 +45,12 @@ $path = $in_student_folder ? '../' : '';
     </div>
 </footer>
 
-<script src="<?= $path ?>public/js/main.js?v=<?= filemtime(($in_student_folder ? '../' : '') . 'public/js/main.js') ?>"></script>
+<link rel="stylesheet" href="<?php echo $path; ?>assets/css/ai_assistant.css?v=<?php echo time(); ?>">
+
+<?php include 'ai_widget.php'; ?>
+<script>
+    const BASE_URL = "<?= BASE_URL ?>"; // Biến toàn cục cho JS dùng
+</script>
+<script src="<?= $path; ?>assets/js/ai_assistant.js?v=<?php echo time(); ?>"></script>
+
+<script src="<?= $path ?>assets/js/main.js?v=<?= filemtime(($in_student_folder ? '../' : '') . 'assets/js/main.js') ?>"></script>

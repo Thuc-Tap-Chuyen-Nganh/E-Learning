@@ -8,7 +8,7 @@ define('DB_PASS', '');
 define('DB_NAME', 'edutech_db');
 
 // 2. Cấu hình Đường dẫn gốc (BASE URL)
-define('BASE_URL', 'http://localhost/E-Learning_test/');
+define('BASE_URL', 'http://localhost/E-Learning/');
 
 // 3. Đường dẫn vật lý (Dùng để include file PHP)
 define('BASE_PATH', dirname(__DIR__) . '/');
@@ -25,4 +25,7 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8mb4");
 require_once __DIR__ . '/../includes/functions.php';
+
+// 6. API Key Google Gemini 
+define('GEMINI_API_KEY', 'AIzaSyDUArL2vdt3a9JdnLhlPcl6ZSfp8KP0JWQ');
 ?>

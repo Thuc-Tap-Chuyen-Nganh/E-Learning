@@ -161,6 +161,8 @@ $user_initial = strtoupper(substr($username, 0, 2));
         </main>
     </div>
 
+    <?php require '../includes/footer.php'; ?>
+
     <script>
         function previewImage(input) {
             if (input.files && input.files[0]) {

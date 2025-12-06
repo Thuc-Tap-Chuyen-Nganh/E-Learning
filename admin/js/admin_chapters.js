@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Các ô input trong modal sửa
     const editIdInput = document.getElementById('edit_chapter_id');
     const editTitleInput = document.getElementById('edit_chapter_title');
-    const editDescInput = document.getElementById('edit_chapter_desc');
     const editOrderInput = document.getElementById('edit_chapter_order');
 
     if (editModal) {
@@ -131,13 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Lấy dữ liệu từ data attributes của nút
                 const id = this.dataset.id;
                 const title = this.dataset.title;
-                const desc = this.dataset.desc;
                 const order = this.dataset.order;
 
                 // Điền vào form
                 editIdInput.value = id;
                 editTitleInput.value = title;
-                editDescInput.value = desc;
                 editOrderInput.value = order;
 
                 // Mở modal

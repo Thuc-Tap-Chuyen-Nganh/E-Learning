@@ -61,6 +61,8 @@
 }
 
 .rating-stars {
+    display: flex;
+    align-items: baseline;
     color: #f69c08;
     font-size: 14px;
     font-weight: 700;
@@ -270,6 +272,27 @@
 
 .share-course { text-align: center; margin-top: 20px; }
 .share-course a { font-weight: 600; text-decoration: underline; font-size: 14px; }
+
+/* CSS CHO FORM ĐÁNH GIÁ SAO */
+.star-rating {
+    direction: rtl; /* Đảo chiều để hover hoạt động đúng logic */
+    display: inline-flex;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: 0.2s;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #f59e0b; /* Màu vàng cam */
+}
 
 /* =========================================
    RESPONSIVE

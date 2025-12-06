@@ -114,5 +114,7 @@ while ($row = $result->fetch_assoc()) {
         </main>
     </div>
 
+    <?php require '../includes/footer.php'; ?>
+
 </body>
 </html>

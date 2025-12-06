@@ -179,7 +179,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- 6. XỬ LÝ ĐÓNG MODAL KHI CLICK RA NGOÀI (GỘP CHUNG) ---
+    // --- 6. CHỨC NĂNG IMPORT WORD ---
+    window.importWordToEditor = function(input, mode) {
+        if (!input.files || !input.files[0]) return;
+
+        const file = input.files[0];
+        const statusSpan = document.getElementById(mode === 'add' ? 'import_status_add' : 'import_status_edit');
+        
+        // Hiển thị trạng thái đang tải
+        statusSpan.innerText = 'Đang chuyển đổi...';
+        statusSpan.style.color = '#e67e22';
+
+        const formData = new FormData();
+        formData.append('word_file', file);
+
+        fetch('../logic/admin/import_word.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Xác định editor nào cần điền dữ liệu
+                let targetEditor = (mode === 'add') ? editorAddInstance : editorEditInstance;
+                
+                if (targetEditor) {
+                    // Chèn nội dung vào CKEditor
+                    targetEditor.setData(data.html);
+                    statusSpan.innerText = 'Nhập thành công!';
+                    statusSpan.style.color = '#27ae60';
+                } else {
+                    statusSpan.innerText = 'Lỗi: Không tìm thấy Editor.';
+                    statusSpan.style.color = 'red';
+                }
+            } else {
+                statusSpan.innerText = 'Lỗi: ' + data.message;
+                statusSpan.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            statusSpan.innerText = 'Lỗi kết nối server.';
+            statusSpan.style.color = 'red';
+        })
+        .finally(() => {
+            // Reset input file để chọn lại file cũ vẫn ăn sự kiện change
+            input.value = ''; 
+            // Xóa thông báo sau 3s
+            setTimeout(() => { statusSpan.innerText = ''; }, 3000);
+        });
+    }
+
+    // --- 7. XỬ LÝ ĐÓNG MODAL KHI CLICK RA NGOÀI (GỘP CHUNG) ---
     window.addEventListener('click', (e) => {
         if (e.target == addModal) addModal.classList.remove('show');
         if (e.target == editModal) editModal.classList.remove('show');

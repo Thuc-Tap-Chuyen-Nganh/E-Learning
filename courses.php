@@ -56,6 +56,10 @@ $stmt_final->bind_param($types, ...$params);
 $stmt_final->execute();
 $result_courses = $stmt_final->get_result();
 
+// === 3. DANH MỤC ====
+$stmt_cate = $conn->prepare("SELECT category FROM courses GROUP BY category");
+$stmt_cate->execute();
+$categories = $stmt_cate->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -110,19 +114,9 @@ $result_courses = $stmt_final->get_result();
                             <h4>Danh mục</h4>
                             <ul class="filter-list">
                                 <li><a href="courses.php" class="<?= $category_filter == '' ? 'active' : '' ?>">Tất cả</a></li>
-                                <li><a href="courses.php?category=Lập trình Web" class="<?= $category_filter == 'Lập trình Web' ? 'active' : '' ?>">Lập trình Web</a></li>
-                                <li><a href="courses.php?category=Lập trình Mobile" class="<?= $category_filter == 'Lập trình Mobile' ? 'active' : '' ?>">Lập trình Mobile</a></li>
-                                <li><a href="courses.php?category=Data Science" class="<?= $category_filter == 'Data Science' ? 'active' : '' ?>">Data Science</a></li>
-                                <li><a href="courses.php?category=Thiết kế" class="<?= $category_filter == 'Thiết kế' ? 'active' : '' ?>">Thiết kế UI/UX</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="filter-group">
-                            <h4>Trình độ</h4>
-                            <ul class="filter-list">
-                                <li><a href="#">Tất cả trình độ</a></li>
-                                <li><a href="#">Người mới (Beginner)</a></li>
-                                <li><a href="#">Nâng cao (Advanced)</a></li>
+                                <?php while($row = $categories->fetch_assoc()): ?>
+                                    <li><a href="courses.php?category=<?php echo $row['category'] ?>" class="<?= $category_filter == $row['category'] ? 'active' : ''?>"><?php echo $row['category'] ?></a></li>
+                                <?php endwhile; ?>
                             </ul>
                         </div>
                     </aside>
@@ -145,7 +139,6 @@ $result_courses = $stmt_final->get_result();
                                     <div class="course-card">
                                         <div class="course-thumb">
                                             <img src="<?php echo get_course_image($row['thumbnail'], $row['category']); ?>" alt="<?php echo htmlspecialchars($row['title']); ?>">
-                                            <span class="badge badge-beginner">Mọi trình độ</span>
                                         </div>
                                         <div class="course-body">
                                             <div class="course-cat"><?php echo htmlspecialchars($row['category']); ?></div>
@@ -162,15 +155,17 @@ $result_courses = $stmt_final->get_result();
                                             </div>
                                             
                                             <div class="course-rating">
-                                                <span class="rating-val">5.0</span>
-                                                <div class="stars">
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
+                                                <span class="rating-val"><?= $row['avg_rating'] > 0 ? $row['avg_rating'] : '5.0' ?></span>
+                                                <div class="stars" style="color: #f59e0b; font-size: 12px;">
+                                                    <?php
+                                                        // Nếu chưa có đánh giá nào thì hiện 5 sao ảo cho đẹp
+                                                        $rating_display = $row['avg_rating'] > 0 ? round($row['avg_rating']) : 5;
+                                                        for($k=1; $k<=5; $k++) {
+                                                            echo $k <= $rating_display ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star" style="color:#ccc;"></i>';
+                                                        }
+                                                    ?>
                                                 </div>
-                                                <span class="rating-count">(Mới)</span>
+                                                <span class="rating-count" style="font-size: 12px; color: #777;">(<?= $row['review_count'] ?> đánh giá)</span>
                                             </div>
                                             
                                             <div class="course-footer">

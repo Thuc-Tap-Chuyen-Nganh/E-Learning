@@ -32,7 +32,8 @@ $avatar_url = $show_avatar ? BASE_URL . $user_avatar : "https://ui-avatars.com/a
                         </a>
                         
                         <a href="<?= BASE_URL ?>logic/auth/logout.php" class="btn-logout" title="Đăng xuất" 
-                           style="padding: 5px 10px; border: 1px solid #fee2e2; background: #fee2e2; color: #dc2626; border-radius: 5px;">
+                           style="padding: 5px 10px; border: 1px solid #fee2e2; background: #fee2e2; color: #dc2626; border-radius: 5px;"
+                           onclick="sessionStorage.removeItem('eduChatHistory');">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </a>
                     </div>
@@ -61,7 +62,7 @@ $avatar_url = $show_avatar ? BASE_URL . $user_avatar : "https://ui-avatars.com/a
         </ul>
         <div class="mobile-auth-buttons">
             <?php if ($is_logged_in): ?>
-                <a href="<?= BASE_URL ?>logic/auth/logout.php" class="btn btn-secondary" style="color: red;">Đăng xuất</a>
+                <a href="<?= BASE_URL ?>logic/auth/logout.php" class="btn btn-secondary" style="color: red;" onclick="sessionStorage.removeItem('eduChatHistory');">Đăng xuất</a>
             <?php else: ?>
                 <a href="<?= BASE_URL ?>login.php" class="btn btn-secondary">Đăng nhập</a>
                 <a href="<?= BASE_URL ?>register.php" class="btn btn-primary">Đăng ký</a>

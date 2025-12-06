@@ -189,5 +189,7 @@ $avg_progress = ($total_enrolled > 0) ? round($total_progress_sum / $total_enrol
         </main>
     </div>
 
+    <?php require '../includes/footer.php'; ?>
+
 </body>
 </html>

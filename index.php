@@ -188,15 +188,17 @@ $result_featured = $conn->query($sql_featured);
                                     </div>
                                     
                                     <div class="course-rating">
-                                        <span class="rating-val">5.0</span>
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
+                                        <span class="rating-val"><?= $row['avg_rating'] > 0 ? $row['avg_rating'] : '5.0' ?></span>
+                                        <div class="stars" style="color: #f59e0b; font-size: 12px;">
+                                            <?php
+                                                // Nếu chưa có đánh giá nào thì hiện 5 sao ảo cho đẹp
+                                                $rating_display = $row['avg_rating'] > 0 ? round($row['avg_rating']) : 5;
+                                                for($k=1; $k<=5; $k++) {
+                                                    echo $k <= $rating_display ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star" style="color:#ccc;"></i>';
+                                                }
+                                            ?>
                                         </div>
-                                        <span class="rating-count">(Mới)</span>
+                                        <span class="rating-count" style="font-size: 12px; color: #777;">(<?= $row['review_count'] ?> đánh giá)</span>
                                     </div>
                                     
                                     <div class="course-footer">

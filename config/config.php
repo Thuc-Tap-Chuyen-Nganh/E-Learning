@@ -27,5 +27,5 @@ $conn->set_charset("utf8mb4");
 require_once __DIR__ . '/../includes/functions.php';
 
 // 6. API Key Google Gemini 
-define('GEMINI_API_KEY', 'AIzaSyDUArL2vdt3a9JdnLhlPcl6ZSfp8KP0JWQ');
+define('GEMINI_API_KEY', '...');
 ?>

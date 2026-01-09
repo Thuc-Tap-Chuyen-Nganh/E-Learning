@@ -86,6 +86,7 @@ $res_top = $conn->query($sql_top);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="../favicon.ico">
     
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= time() ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -255,3 +256,4 @@ $res_top = $conn->query($sql_top);
 
 </body>
 </html>
+

@@ -6,38 +6,6 @@ require '../../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Gửi mail xác nhận
-function sendVerificationEmail($email, $token) {
-  $mail = new PHPMailer(true);
-  $link = "http://localhost/E-learning/verify_email.php?token=$token";
-  
-  try {
-    // Cấu hình Server (SMTP của Gmail)
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'edutech.ttcn@gmail.com';
-    $mail->Password = 'whja jfkq kawd qkyy';
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port = 465;
-    $mail->CharSet = 'UTF-8';
-
-    // Người gửi, người nhận
-    $mail->setFrom('no-reply@elearning.com', 'EduTech');
-    $mail->addAddress($email);
-
-    // Nội dung Email
-    $mail->isHTML();
-    $mail->Subject = 'Kích hoạt tài khoản EduTech E-Learning';
-    $mail->Body    = "Chào bạn,<br><br>Cảm ơn bạn đã đăng ký. Vui lòng nhấp vào liên kết dưới đây để kích hoạt tài khoản:<br>"
-                    . "<a href='$link'>$link</a><br><br>";
-    $mail->send();
-    return true;
-  } catch (Exception $e) {
-    return false;
-  }
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST['name'];
   $email = $_POST['email'];
@@ -68,34 +36,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         VALUES (?, ?, ?, 'pending')"
   );
   $stmt->bind_param("sss", $username, $email, $password_hash);
-  $stmt->execute();
   
-  // Lấy user_id vừa tạo (Dùng $conn->insert_id)
-  $user_id = $conn->insert_id;
-  $stmt->close();
+  if ($stmt->execute()) {
+      $user_id = $stmt->insert_id;
 
-  // Tạo Token xác thực
-  $token = bin2hex(random_bytes(32)); 
-  $token_hash = hash('sha256', $token); 
-  $expires_at_ts = time() + 3600; // 1 giờ
-  $expires_at_sql = date('Y-m-d H:i:s', $expires_at_ts);
+      // TẠO OTP
+      $otp = rand(100000, 999999);
+      $otp_hash = hash('sha256', $otp);
+      $expires_at = date('Y-m-d H:i:s', time() + 900); // 15 phút
 
-  // Lưu Token vào csdl
-  $stmt = $conn->prepare(
-      "INSERT INTO user_tokens (user_id, token_hash, token_type, expires_at) 
-        VALUES (?, ?, 'email_verification', ?)"
-  );
-  // "i" là integer, "s" là string
-  $stmt->bind_param("iss", $user_id, $token_hash, $expires_at_sql);
-  $stmt->execute();
-  $stmt->close();
+      // Lưu OTP
+      $stmt_token = $conn->prepare("INSERT INTO user_tokens (user_id, token_hash, token_type, expires_at) VALUES (?, ?, 'email_verification', ?)");
+      $stmt_token->bind_param("iss", $user_id, $otp_hash, $expires_at);
+      $stmt_token->execute();
 
-  // Gửi Email
-  sendVerificationEmail($email, $token);
+      // Gửi Email
+      require "../../vendor/autoload.php";
+      $mail = new PHPMailer(true);
+      try {
+          // Cấu hình mail server (Giữ nguyên cấu hình cũ của bạn)
+          $mail->isSMTP();
+          $mail->Host = 'smtp.gmail.com';
+          $mail->SMTPAuth = true;
+          $mail->Username = 'edutech.ttcn@gmail.com';
+          $mail->Password = 'whja jfkq kawd qkyy'; // Mật khẩu ứng dụng
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+          $mail->Port = 465;
+          $mail->CharSet = 'UTF-8';
 
-  header("Location: " . BASE_URL . "login.php");
-  exit();
+          $mail->setFrom('no-reply@elearning.com', 'EduTech');
+          $mail->addAddress($email, $name);
+          $mail->isHTML(true);
+          $mail->Subject = 'Mã xác thực đăng ký tài khoản';
+          $mail->Body    = "Xin chào $name,<br>Mã xác thực (OTP) của bạn là: <b style='font-size: 20px; color: blue;'>$otp</b><br>Mã có hiệu lực trong 15 phút.";
+          
+          $mail->send();
+      } catch (Exception $e) {
+          // Log lỗi nếu cần
+      }
 
+      // CHUYỂN HƯỚNG SANG TRANG NHẬP OTP
+      header("Location: " . BASE_URL . "otp.php?email=" . urlencode($email) . "&type=register");
+      exit();
+  }
 } else {
   header("Location: " . BASE_URL . "index.php");
   exit();

@@ -8,6 +8,7 @@ require_once 'config/config.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Đăng ký | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="assets/css/register.css?v=<?= filemtime('assets/css/register.css') ?>">
 </head>
 <body>
@@ -41,7 +42,7 @@ require_once 'config/config.php';
           if ($error == "emailtaken") $error_message = "Email này đã được sử dụng!";
         }
         ?>
-        <div class="error" id="errorMsg"><?php echo $error_message; ?></div>
+        <div class="alert alert-danger" id="errorMsg" style="<?php echo empty($error_message) ? 'display: none;' : ''; ?>"><?php echo $error_message; ?></div>
         <button type="submit" class="btn">Tạo tài khoản</button>
         <a href="index.php" class="back-link">
           <i class="fas fa-arrow-left"></i> Quay lại trang chủ

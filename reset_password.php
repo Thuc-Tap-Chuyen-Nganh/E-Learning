@@ -1,32 +1,51 @@
 <?php
+session_start();
 require_once 'config/config.php';
 
-$token = $_GET['token']??'';
+// 1. KIỂM TRA QUYỀN TRUY CẬP (SESSION TỪ BƯỚC OTP)
+// Nếu chưa qua bước OTP thành công thì đá về trang quên mật khẩu
+if (!isset($_SESSION['allow_reset_password']) || !isset($_SESSION['reset_email'])) {
+    header("Location: " . BASE_URL . "forgot.php");
+    exit();
+}
+
 $error_message = "";
-$show_form = false;
 
-if (empty($token)) {
-  $error_message = "Link không hợp lệ!";
-} else{
-  $token_hash = hash('sha256', $token);
-  $stmt = $conn->prepare("SELECT * FROM user_tokens WHERE token_hash = ? AND token_type = 'password_reset'");
-  $stmt->bind_param("s", $token_hash);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $token_data = $result->fetch_assoc();
-  $stmt->close();
+// 2. XỬ LÝ KHI NGƯỜI DÙNG BẤM "LƯU MẬT KHẨU" (POST)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $password = $_POST['password'] ?? '';
+    $confirm = $_POST['confirm'] ?? '';
+    $email = $_SESSION['reset_email'];
 
-  if (!$token_data) 
-    $error_message = "Link không hợp lệ hoặc đã được sử dụng.";
-  elseif (strtotime($token_data['expires_at']) < time()) {
-    $error_message = "Link đã hết hạn. Vui lòng yêu cầu link mới.";
-    $stmt_del = $conn->prepare("DELETE FROM user_tokens WHERE token_hash = ?");
-    $stmt_del->bind_param("s", $token_hash);
-    $stmt_del->execute();
-    $stmt_del->close();
-  }
-  else 
-    $show_form = true;
+    // Validate dữ liệu
+    if (empty($password) || empty($confirm)) {
+        $error_message = "Vui lòng nhập đầy đủ thông tin.";
+    } elseif (strlen($password) < 6) {
+        $error_message = "Mật khẩu phải có ít nhất 6 ký tự.";
+    } elseif ($password !== $confirm) {
+        $error_message = "Mật khẩu nhập lại không khớp.";
+    } else {
+        // --- LOGIC CẬP NHẬT MẬT KHẨU ---
+        
+        // Băm mật khẩu mới
+        $new_hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // Cập nhật vào DB theo Email (lấy từ session)
+        $stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
+        $stmt->bind_param("ss", $new_hash, $email);
+
+        if ($stmt->execute()) {
+            // Thành công -> Xóa session quyền reset để không cho back lại
+            unset($_SESSION['allow_reset_password']);
+            unset($_SESSION['reset_email']);
+
+            // Chuyển về trang đăng nhập kèm thông báo
+            header("Location: " . BASE_URL . "login.php?status=reset_success");
+            exit();
+        } else {
+            $error_message = "Lỗi hệ thống. Vui lòng thử lại sau.";
+        }
+    }
 }
 ?>
 
@@ -37,50 +56,37 @@ if (empty($token)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt lại mật khẩu | EduTech</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="assets/css/login.css?v=<?= filemtime('assets/css/login.css') ?>">
+    <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/css/login.css?v=<?= time() ?>">
 </head>
 <body>
   <div class="card">
-    <?php if ($show_form): ?>
-    <form action="<?= BASE_URL ?>logic/auth/reset_password.php" method="post" id="resetForm">
+    <form action="" method="post">
       <div class="header">
-        <h1><i class="fas fa-unlock-alt"></i> Đặt mật khẩu mới</h1>
-        <p>Vui lòng nhập mật khẩu mới của bạn</p>
+        <h1><i class="fas fa-lock"></i> Đặt lại mật khẩu</h1>
+        <p>Nhập mật khẩu mới cho tài khoản của bạn</p>
       </div>
+      
       <div class="form">
-        <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>" />
         <div class="form-group">
           <label for="password">Mật khẩu mới</label>
-          <input type="password" id="password" name="password" placeholder="Tối thiểu 6 ký tự" />
-        </div>
-        <div class="form-group">
-          <label for="confirm">Nhập lại mật khẩu mới</label>
-          <input type="password" id="confirm" name="confirm" placeholder="Nhập lại mật khẩu" />
-        </div>
-        <div class="error" id="errorMsg">
-          <?php
-            // Hiển thị lỗi từ handler (nếu có)
-            if (isset($_GET['error']) && $_GET['error'] == 'mismatch') {
-              echo "Mật khẩu nhập lại không khớp!";
-            }
-          ?>
+          <input type="password" id="password" name="password" placeholder="Tối thiểu 6 ký tự" required />
         </div>
         
-        <button type="submit" class="btn">Lưu mật khẩu</button>
+        <div class="form-group">
+          <label for="confirm">Nhập lại mật khẩu</label>
+          <input type="password" id="confirm" name="confirm" placeholder="Xác nhận mật khẩu" required />
+        </div>
+
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> <?= $error_message ?>
+            </div>
+        <?php endif; ?>
+        
+        <button type="submit" class="btn">Lưu mật khẩu mới</button>
       </div>
     </form>
-    <?php else: ?>
-      <div class="header">
-        <h1><i class="fas fa-exclamation-triangle"></i> Lỗi</h1>
-      </div>
-      <div class="form" style="text-align: center;">
-        <p class="error" style="display:block;"><?php echo $error_message; ?></p>
-        <a href="forgot.php" class="back-link">
-          <i class="fas fa-arrow-left"></i> Quay lại trang Quên mật khẩu
-        </a>
-      </div>
-    <?php endif; ?>
   </div>
-  <script src="assets/js/validate.js"></script>
 </body>
 </html>

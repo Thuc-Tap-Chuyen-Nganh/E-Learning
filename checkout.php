@@ -41,6 +41,7 @@ if ($check->num_rows > 0) {
     <title>Thanh toán - <?= htmlspecialchars($course['title']) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/index.css">
     
     <style>
@@ -66,6 +67,26 @@ if ($check->num_rows > 0) {
 
         /* Responsive */
         @media (max-width: 768px) { .checkout-container { grid-template-columns: 1fr; padding: 0 20px; } }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px; width: 90%; text-align: center;
+        }
+        .modal-icon { font-size: 48px; color: #f59e0b; margin-bottom: 15px; }
+        .modal-title { font-size: 20px; font-weight: 600; margin-bottom: 10px; color: #333; }
+        .modal-message { color: #666; margin-bottom: 25px; line-height: 1.5; }
+        .modal-buttons { display: flex; gap: 10px; justify-content: center; }
+        .btn-modal { padding: 10px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .btn-confirm-modal { background: #22c55e; color: white; }
+        .btn-confirm-modal:hover { background: #16a34a; }
+        .btn-cancel { background: #6b7280; color: white; }
+        .btn-cancel:hover { background: #4b5563; }
     </style>
 </head>
 <body>
@@ -126,12 +147,12 @@ if ($check->num_rows > 0) {
                 </div>
             </div>
 
-            <form action="<?= BASE_URL ?>logic/student/process_payment.php" method="POST" onsubmit="return confirm('Bạn chắc chắn đã chuyển khoản chưa?');">
+            <form id="paymentForm" action="<?= BASE_URL ?>logic/student/process_payment.php" method="POST">
                 <input type="hidden" name="course_id" value="<?= $course_id ?>">
                 <input type="hidden" name="amount" value="<?= $course['price'] ?>">
                 <input type="hidden" name="transaction_code" value="<?= $order_code ?>">
                 
-                <button type="submit" class="btn-confirm">
+                <button type="button" class="btn-confirm" onclick="showConfirmModal()">
                     <i class="fa-solid fa-check"></i> Tôi đã thanh toán
                 </button>
             </form>
@@ -142,6 +163,42 @@ if ($check->num_rows > 0) {
         </div>
 
     </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fa-solid fa-question-circle"></i>
+            </div>
+            <h3 class="modal-title">Xác nhận thanh toán</h3>
+            <p class="modal-message">Bạn chắc chắn đã chuyển khoản theo thông tin hướng dẫn chưa? Hệ thống sẽ duyệt đơn hàng trong vòng 24h.</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-cancel" onclick="hideConfirmModal()">Hủy</button>
+                <button class="btn-modal btn-confirm-modal" onclick="confirmPayment()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function hideConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        function confirmPayment() {
+            document.getElementById('paymentForm').submit();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideConfirmModal();
+            }
+        });
+    </script>
 
     <?php require 'includes/footer.php'; ?>
 

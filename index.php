@@ -18,6 +18,25 @@ $count_enrolls = $res_enrolls->fetch_row()[0];
 // --- 2. LẤY 3 KHÓA HỌC MỚI NHẤT CHO PHẦN "NỔI BẬT" ---
 $sql_featured = "SELECT * FROM courses WHERE status = 'published' ORDER BY course_id DESC LIMIT 3";
 $result_featured = $conn->query($sql_featured);
+
+// --- 3. LẤY TOP 3 DANH MỤC PHỔ BIẾN CHO HERO QUICK LINKS ---
+$sql_top_hero = "SELECT c.category, COUNT(e.enrollment_id) as enroll_count FROM enrollments e JOIN courses c ON e.course_id = c.course_id WHERE c.status = 'published' GROUP BY c.category ORDER BY enroll_count DESC LIMIT 3";
+$result_top_hero = $conn->query($sql_top_hero);
+
+// --- 4. LẤY TOP 4 DANH MỤC PHỔ BIẾN CHO CATEGORIES SECTION ---
+$sql_top_categories = "SELECT c.category, COUNT(e.enrollment_id) as enroll_count FROM enrollments e JOIN courses c ON e.course_id = c.course_id WHERE c.status = 'published' GROUP BY c.category ORDER BY enroll_count DESC LIMIT 4";
+$result_top_categories = $conn->query($sql_top_categories);
+
+// --- 5. MAP ICONS CHO CATEGORIES ---
+$category_icons = [
+    'Lập trình Web' => ['class' => 'icon-code', 'icon' => 'fa-code'],
+    'Lập trình Mobile' => ['class' => 'icon-mobile', 'icon' => 'fa-mobile-screen'],
+    'Data Science' => ['class' => 'icon-data', 'icon' => 'fa-database'],
+    'An ninh mạng' => ['class' => 'icon-security', 'icon' => 'fa-shield-halved'],
+    'AI' => ['class' => 'icon-ai', 'icon' => 'fa-brain'],
+    'Cloud' => ['class' => 'icon-cloud', 'icon' => 'fa-cloud'],
+    'default' => ['class' => 'icon-code', 'icon' => 'fa-code']
+];
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +50,7 @@ $result_featured = $conn->query($sql_featured);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="favicon.ico">
 
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/index.css?v=<?= time() ?>">
 </head>
@@ -65,9 +85,11 @@ $result_featured = $conn->query($sql_featured);
 
                 <div class="hero-quick-links">
                     <span>Phổ biến:</span>
-                    <a href="courses.php?category=Lập trình Web">Web Development</a>
-                    <a href="courses.php?category=Python">Python</a>
-                    <a href="courses.php?category=Data Science">Data Science</a>
+                    <?php if ($result_top_hero->num_rows > 0): ?>
+                        <?php while($cat = $result_top_hero->fetch_assoc()): ?>
+                            <a href="courses.php?category=<?= urlencode($cat['category']) ?>"><?= htmlspecialchars($cat['category']) ?></a>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             
@@ -121,36 +143,17 @@ $result_featured = $conn->query($sql_featured);
                 </div>
 
                 <div class="categories-grid">
-                    <a href="courses.php?category=Lập trình Web" class="cat-card">
-                        <div class="cat-icon icon-code"><i class="fa-solid fa-code"></i></div>
-                        <h3>Lập trình Web</h3>
-                        <p>HTML, CSS, JS, React...</p>
-                    </a>
-                    <a href="courses.php?category=Lập trình Mobile" class="cat-card">
-                        <div class="cat-icon icon-mobile"><i class="fa-solid fa-mobile-screen"></i></div>
-                        <h3>Lập trình Mobile</h3>
-                        <p>Android, iOS, Flutter</p>
-                    </a>
-                    <a href="courses.php?category=Data Science" class="cat-card">
-                        <div class="cat-icon icon-data"><i class="fa-solid fa-database"></i></div>
-                        <h3>Khoa học dữ liệu</h3>
-                        <p>Python, SQL, Big Data</p>
-                    </a>
-                    <a href="courses.php?category=An ninh mạng" class="cat-card">
-                        <div class="cat-icon icon-security"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3>An ninh mạng</h3>
-                        <p>Ethical Hacking, Network</p>
-                    </a>
-                    <a href="courses.php?category=AI" class="cat-card">
-                        <div class="cat-icon icon-ai"><i class="fa-solid fa-brain"></i></div>
-                        <h3>AI & Machine Learning</h3>
-                        <p>Deep Learning, NLP</p>
-                    </a>
-                    <a href="courses.php?category=Cloud" class="cat-card">
-                        <div class="cat-icon icon-cloud"><i class="fa-solid fa-cloud"></i></div>
-                        <h3>Điện toán đám mây</h3>
-                        <p>AWS, Azure, Docker</p>
-                    </a>
+                    <?php if ($result_top_categories->num_rows > 0): ?>
+                        <?php while($cat = $result_top_categories->fetch_assoc()): ?>
+                            <?php
+                            $icon_data = $category_icons[$cat['category']] ?? $category_icons['default'];
+                            ?>
+                            <a href="courses.php?category=<?= urlencode($cat['category']) ?>" class="cat-card">
+                                <div class="cat-icon <?= $icon_data['class'] ?>"><i class="fa-solid <?= $icon_data['icon'] ?>"></i></div>
+                                <h3><?= htmlspecialchars($cat['category']) ?></h3>
+                            </a>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
@@ -183,7 +186,7 @@ $result_featured = $conn->query($sql_featured);
                                     </h3>
                                     
                                     <div class="course-instructor">
-                                        <img src="https://ui-avatars.com/api/?name=Edu+Tech&background=random" alt="Instructor">
+                                        <img src="assets/images/EdutechTeam.png" alt="Instructor">
                                         <span>EduTech Team</span>
                                     </div>
                                     

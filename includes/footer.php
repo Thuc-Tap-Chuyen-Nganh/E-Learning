@@ -1,8 +1,11 @@
 <?php
 $in_student_folder = (basename(dirname($_SERVER['PHP_SELF'])) == 'student');
 $path = $in_student_folder ? '../' : '';
+require_once $path . 'config/config.php';
 
-require_once $path . 'config/config.php'; 
+// Lấy top 3 danh mục phổ biến
+$sql_top_categories = "SELECT c.category, COUNT(e.enrollment_id) as enroll_count FROM enrollments e JOIN courses c ON e.course_id = c.course_id WHERE c.status = 'published' GROUP BY c.category ORDER BY enroll_count DESC LIMIT 3";
+$result_top_categories = $conn->query($sql_top_categories);
 ?>
 
 <footer class="footer">
@@ -17,17 +20,18 @@ require_once $path . 'config/config.php';
             <div class="footer-links">
                 <h4>Liên kết nhanh</h4>
                 <ul>
-                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="<?= BASE_URL ?>about_us.php">Về chúng tôi</a></li>
                     <li><a href="<?= $path ?>courses.php">Tất cả khóa học</a></li>
-                    <li><a href="#">Trở thành giảng viên</a></li>
                 </ul>
             </div>
             <div class="footer-links">
                 <h4>Danh mục phổ biến</h4>
                 <ul>
-                    <li><a href="#">Lập trình Web</a></li>
-                    <li><a href="#">Data Science</a></li>
-                    <li><a href="#">Cybersecurity</a></li>
+                    <?php if ($result_top_categories->num_rows > 0): ?>
+                        <?php while($cat = $result_top_categories->fetch_assoc()): ?>
+                            <li><a href="<?= BASE_URL ?>courses.php?category=<?= urlencode($cat['category']) ?>"><?= htmlspecialchars($cat['category']) ?></a></li>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="footer-links">
@@ -47,9 +51,9 @@ require_once $path . 'config/config.php';
 
 <link rel="stylesheet" href="<?php echo $path; ?>assets/css/ai_assistant.css?v=<?php echo time(); ?>">
 
-<?php include 'ai_widget.php'; ?>
+<script src="assets/js/ai_widget.js"></script>
 <script>
-    const BASE_URL = "<?= BASE_URL ?>"; // Biến toàn cục cho JS dùng
+    const BASE_URL = "<?= rtrim(BASE_URL, '/') . '/' ?>";
 </script>
 <script src="<?= $path; ?>assets/js/ai_assistant.js?v=<?php echo time(); ?>"></script>
 

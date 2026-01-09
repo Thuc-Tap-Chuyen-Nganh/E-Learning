@@ -74,6 +74,7 @@ $categories = $stmt_cate->get_result();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="favicon.ico">
 
     <link rel="stylesheet" href="assets/css/index.css?v=<?= filemtime('assets/css/index.css') ?>">
     <link rel="stylesheet" href="assets/css/courses.css?v=<?= time() ?>">
@@ -124,12 +125,6 @@ $categories = $stmt_cate->get_result();
                     <div class="course-list-content">
                         <div class="list-top-bar">
                             <p class="result-count">Hiển thị <strong><?php echo $result_courses->num_rows; ?></strong> trên tổng <strong><?php echo $total_courses; ?></strong> khóa học</p>
-                            <div class="sort-box">
-                                <select class="sort-select">
-                                    <option>Mới nhất</option>
-                                    <option>Giá thấp đến cao</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="course-grid">
@@ -150,7 +145,7 @@ $categories = $stmt_cate->get_result();
                                             </h3>
                                             
                                             <div class="course-instructor">
-                                                <img src="https://ui-avatars.com/api/?name=Edu+Tech&background=random" alt="Instructor">
+                                                <img src="assets/images/EdutechTeam.png" alt="Instructor">
                                                 <span>EduTech Team</span>
                                             </div>
                                             

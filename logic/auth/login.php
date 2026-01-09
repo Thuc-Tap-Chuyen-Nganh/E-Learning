@@ -21,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Mật khẩu khớp! Kiểm tra 'status'
         if ($user['status'] == 'pending') {
-            header("Location: " . BASE_URL . "login.php?error=notverified");
+            // Tài khoản chưa kích hoạt -> Báo lỗi và hiện link
+            header("Location: " . BASE_URL . "login.php?error=notverified&email=" . urlencode($email));
             exit();
         }
         if ($user['status'] == 'banned') {

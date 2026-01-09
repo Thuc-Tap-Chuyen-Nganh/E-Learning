@@ -3,6 +3,13 @@ require_once '../config/config.php';
 // Lấy tên file hiện tại
 $current_page = basename($_SERVER['PHP_SELF']);
 
+// Đếm số giao dịch chờ duyệt
+$pending_count = 0;
+if (isset($_SESSION['admin_id'])) {
+    $pending_query = $conn->query("SELECT COUNT(*) as count FROM payments WHERE status = 'pending'");
+    $pending_count = $pending_query->fetch_assoc()['count'];
+}
+
 // Các trang con thuộc mục Khóa học
 $course_pages = [
     'admin_courses.php',
@@ -54,6 +61,9 @@ $student_pages = [
                 <a href="<?= BASE_URL ?>admin/admin_payments.php" class="<?= $current_page == 'admin_payments.php' ? 'active' : '' ?>">
                     <i class="fa-solid fa-money-bill-wave"></i>
                     <span>Quản lý thanh toán</span>
+                    <?php if ($pending_count > 0): ?>
+                        <span class="badge badge-danger"><?= $pending_count ?></span>
+                    <?php endif; ?>
                 </a>
             </li>
             

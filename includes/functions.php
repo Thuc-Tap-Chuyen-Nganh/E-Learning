@@ -11,15 +11,8 @@ function get_course_image($thumbnail, $category) {
         }
     }
 
-    // Ảnh Placeholder
-    $cat = strtolower($category);
-    if (strpos($cat, 'web') !== false) return 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80';
-    if (strpos($cat, 'data') !== false) return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80';
-    if (strpos($cat, 'design') !== false) return 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80';
-    if (strpos($cat, 'mobile') !== false) return 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&q=80';
-    if (strpos($cat, 'security') !== false) return 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80';
-    
-    return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80';
+    // Ảnh mặc định
+    return BASE_URL . 'assets/images/default_course_img.PNG';
 }
 
 /**

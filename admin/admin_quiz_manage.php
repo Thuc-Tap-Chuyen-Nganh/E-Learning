@@ -40,6 +40,7 @@ $questions = $stmt_questions->get_result();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="../favicon.ico">
     
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
     
@@ -227,10 +228,10 @@ $questions = $stmt_questions->get_result();
                                             <i class="fa-solid fa-pencil"></i>
                                         </button>
 
-                                        <form action="<?= BASE_URL ?>logic/admin/quiz_delete.php" method="POST" onsubmit="return confirm('Xóa câu hỏi này?');" style="display:inline;">
+                                        <form id="deleteForm_<?php echo $q['question_id']; ?>" action="<?= BASE_URL ?>logic/admin/quiz_delete.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="question_id" value="<?php echo $q['question_id']; ?>">
                                             <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
-                                            <button type="submit" class="btn-icon btn-delete" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                                            <button type="button" class="btn-icon btn-delete" title="Xóa" onclick="showDeleteModal(<?php echo $q['question_id']; ?>)"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -265,6 +266,9 @@ $questions = $stmt_questions->get_result();
                         <div class="import-box">
                             <h4><i class="fa-solid fa-file-csv"></i> Nhập nhanh từ Excel/CSV</h4>
                             <p>Tải lên file .csv (UTF-8) để nhập nhiều câu hỏi cùng lúc.</p>
+                            <button type="button" class="btn btn-outline" onclick="showSampleModal()" style="width: 100%; margin-bottom: 15px; background: transparent; border: 1px solid #4f46e5; color: #4f46e5;">
+                                <i class="fa-solid fa-eye"></i> Xem ảnh mẫu CSV
+                            </button>
                             
                             <form action="<?= BASE_URL ?>/logic/admin/quiz_import.php" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="lesson_id" value="<?php echo $lesson_id; ?>">
@@ -426,5 +430,75 @@ $questions = $stmt_questions->get_result();
         });
     </script>
 
+    <!-- Sample CSV Modal -->
+    <div id="sampleModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+        <div class="modal-content" style="background-color: white; padding: 20px; border-radius: 8px; max-width: 600px; width: 90%; text-align: center;">
+            <span class="close" onclick="hideSampleModal()" style="float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+            <h3 style="margin-bottom: 15px;">Mẫu file CSV</h3>
+            <img src="../assets/images/sample_csv.png" alt="Mẫu file CSV" style="width: 100%; max-width: 500px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+    </div>
+
+    <script>
+        function showSampleModal() {
+            document.getElementById('sampleModal').style.display = 'flex';
+        }
+
+        function hideSampleModal() {
+            document.getElementById('sampleModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('sampleModal')) {
+                hideSampleModal();
+            }
+        }
+    </script>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+        <div class="modal-content" style="background-color: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%; text-align: center;">
+            <div style="font-size: 48px; color: #dc3545; margin-bottom: 15px;"><i class="fa-solid fa-trash"></i></div>
+            <h3 style="margin-bottom: 10px; color: #333;">Xác nhận xóa</h3>
+            <p style="color: #666; margin-bottom: 25px;">Bạn có chắc chắn muốn xóa câu hỏi này? Hành động này không thể hoàn tác.</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="hideDeleteModal()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Hủy</button>
+                <button id="confirmDeleteBtn" onclick="confirmDelete()" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDeleteId = null;
+
+        function showDeleteModal(questionId) {
+            currentDeleteId = questionId;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            currentDeleteId = null;
+        }
+
+        function confirmDelete() {
+            if (currentDeleteId) {
+                document.getElementById('deleteForm_' + currentDeleteId).submit();
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('deleteModal')) {
+                hideDeleteModal();
+            }
+            if (event.target == document.getElementById('sampleModal')) {
+                hideSampleModal();
+            }
+        }
+    </script>
+
 </body>
 </html>
+

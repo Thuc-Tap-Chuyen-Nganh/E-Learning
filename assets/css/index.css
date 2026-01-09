@@ -518,3 +518,160 @@ img { max-width: 100%; display: block; }
     .hero-search-form button { width: 100%; }
     .hero-quick-links { display: none; }
 }
+
+/* =========================================
+   ABOUT US PAGE STYLES
+   ========================================= */
+
+.about-hero {
+    background: var(--primary-gradient);
+    padding: 100px 0;
+    text-align: center;
+    color: var(--white);
+}
+
+.about-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.about-subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-mission {
+    padding: 80px 0;
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.mission-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+}
+
+.mission-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 32px;
+    margin: 0 auto 20px;
+}
+
+.mission-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+.mission-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.about-creator {
+    padding: 80px 0;
+}
+
+.creator-profile {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.creator-avatar img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.creator-info h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.creator-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.creator-id {
+    font-size: 16px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.creator-info p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.creator-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: var(--primary-gradient);
+    color: var(--white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.about-stats {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.about-stats h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 60px;
+    color: var(--text-dark);
+}
+
+/* Responsive cho About Us */
+@media (max-width: 768px) {
+    .about-content h1 { font-size: 36px; }
+    .about-subtitle { font-size: 18px; }
+    .creator-profile { grid-template-columns: 1fr; text-align: center; }
+    .creator-info h2 { font-size: 28px; }
+    .creator-info h3 { font-size: 24px; }
+    .mission-grid { grid-template-columns: 1fr; }
+}

@@ -8,6 +8,7 @@ require_once 'config/config.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Đăng nhập | E-Learning</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="assets/css/login.css?v=<?= filemtime('assets/css/login.css') ?>">
 </head>
 <body>
@@ -31,12 +32,15 @@ require_once 'config/config.php';
         $error_message = ""; 
         if (isset($_GET['error'])){
           $error = $_GET['error'];
-          if ($error == "notverified") $error_message = "Tài khoản chưa xác thực email!";
+          if ($error == "notverified"){
+            $email_resend = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+            $error_message = "Tài khoản chưa xác thực! <a href='" . BASE_URL . "logic/auth/resend_otp.php?email=$email_resend&type=register' class='link'>Gửi mã kích hoạt ngay</a>";
+          }
           elseif ($error == "banned") $error_message = "Tài khoản đã bị cấm!";
           elseif ($error == "wrongcreds") $error_message = "Email hoặc mật khẩu không khớp!";
         }
         ?>
-        <div class="error" id="errorMsg"><?php echo $error_message; ?></div>
+        <div class="alert alert-danger" id="errorMsg" style="<?php echo empty($error_message) ? 'display: none;' : ''; ?>"><?php echo $error_message; ?></div>
         <button class="btn">Đăng nhập</button>
         <div class="register-link">
           Chưa có tài khoản? <a href="register.php" class="link">Đăng ký ngay</a>        
@@ -51,5 +55,6 @@ require_once 'config/config.php';
   <script src="assets/js/validate.js"></script>
 </body>
 </html>
+
 
 

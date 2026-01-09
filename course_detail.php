@@ -75,6 +75,7 @@ $reviews_query = $conn->query("
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="favicon.ico">
 
     <link rel="stylesheet" href="assets/css/index.css?v=<?= filemtime('assets/css/index.css') ?>">
     <link rel="stylesheet" href="assets/css/course_detail.css?v=<?= time() ?>">
@@ -118,7 +119,7 @@ $reviews_query = $conn->query("
                     </div>
 
                     <div class="course-instructor-info">
-                        Được tạo bởi <a href="#">EduTech Team</a> • Cập nhật mới nhất
+                        Được tạo bởi <a href="<?= BASE_URL ?>about_us.php">EduTech Team</a> • Cập nhật mới nhất
                     </div>
 
                     <div class="course-lang">
@@ -133,7 +134,7 @@ $reviews_query = $conn->query("
                 
                 <div class="course-left-col">
                     
-                    <div class="what-learn-box">
+                    <!-- <div class="what-learn-box">
                         <h3>Bạn sẽ học được gì?</h3>
                         <ul class="learn-list">
                             <li><i class="fa-solid fa-check"></i> Nắm vững kiến thức nền tảng và nâng cao</li>
@@ -141,7 +142,7 @@ $reviews_query = $conn->query("
                             <li><i class="fa-solid fa-check"></i> Tư duy giải quyết vấn đề logic</li>
                             <li><i class="fa-solid fa-check"></i> Kỹ năng làm việc với công nghệ mới nhất</li>
                         </ul>
-                    </div>
+                    </div> -->
 
                     <div class="course-curriculum">
                         <h3>Nội dung khóa học</h3>
@@ -195,10 +196,10 @@ $reviews_query = $conn->query("
                         </div>
                     </div>
 
-                    <div class="instructor-section">
+                    <!-- <div class="instructor-section">
                         <h3>Giảng viên</h3>
                         <div class="instructor-profile">
-                            <img src="https://ui-avatars.com/api/?name=Edu+Tech&background=random" alt="Instructor">
+                            <img src="assets/images/EdutechTeam.png" alt="Instructor">
                             <div class="instructor-details">
                                 <h4><a href="#">EduTech Team</a></h4>
                                 <p class="job-title">Đội ngũ chuyên gia công nghệ</p>
@@ -211,7 +212,7 @@ $reviews_query = $conn->query("
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="reviews-section" id="reviews">
                         <h3>Đánh giá từ học viên (<?= $course['review_count'] ?? 0 ?>)</h3>
@@ -284,45 +285,51 @@ $reviews_query = $conn->query("
                     <div class="course-sidebar">
                         <div class="preview-video">
                             <img src="<?php echo get_course_image($course['thumbnail'], $course['category']); ?>" alt="Course Preview">
-                            <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                            <div class="preview-text">Xem giới thiệu</div>
                         </div>
 
                         <div class="sidebar-content">
+                            <h3 class="sidebar-course-title"><?php echo htmlspecialchars($course['title']); ?></h3>
+
                             <div class="price-box">
                                 <?php if($course['price'] == 0): ?>
-                                    <span class="current-price" style="color: #16a34a;">Miễn phí</span>
+                                    <span class="current-price free-price">Miễn phí</span>
                                 <?php else: ?>
                                     <span class="current-price"><?php echo number_format($course['price'], 0, ',', '.'); ?>đ</span>
                                 <?php endif; ?>
                             </div>
-                            
-                            <div class="time-left"><i class="fa-regular fa-clock"></i> Truy cập trọn đời</div>
 
                             <?php if ($is_enrolled): ?>
-                                <a href="student/learning.php?course_id=<?php echo $course_id; ?>" class="btn btn-primary btn-full" style="background: #16a34a;">
+                                <a href="student/learning.php?course_id=<?php echo $course_id; ?>" class="btn btn-primary btn-full enrolled-btn">
                                     <i class="fa-solid fa-play"></i> Vào học ngay
                                 </a>
                             <?php else: ?>
                                 <?php if ($course['price'] == 0): ?>
                                     <a href="<?= BASE_URL ?>logic/student/enroll.php?course_id=<?= $course_id ?>" class="btn btn-primary btn-full">
-                                        Đăng ký miễn phí
+                                        <i class="fa-solid fa-plus"></i> Đăng ký miễn phí
                                     </a>
                                 <?php else: ?>
                                     <a href="checkout.php?course_id=<?= $course_id ?>" class="btn btn-primary btn-full">
-                                        Mua khóa học ngay
+                                        <i class="fa-solid fa-cart-shopping"></i> Mua khóa học ngay
                                     </a>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <p class="guarantee">Đảm bảo chất lượng nội dung</p>
 
                             <div class="includes-box">
                                 <h4>Khóa học bao gồm:</h4>
                                 <ul>
-                                    <li><i class="fa-solid fa-video"></i> <?php echo format_time($total_seconds); ?> video bài giảng</li>
-                                    <li><i class="fa-solid fa-mobile-screen"></i> Truy cập trên Mobile</li>
-                                    <li><i class="fa-solid fa-infinity"></i> Truy cập trọn đời</li>
+                                    <li><i class="fa-solid fa-book"></i> <?php echo count($chapters_data); ?> chương, <?php echo $total_lessons; ?> bài học</li>
+                                    <li><i class="fa-solid fa-clock"></i> Tổng thời lượng <?php echo format_time($total_seconds); ?></li>
                                 </ul>
+                            </div>
+
+                            <div class="share-box">
+                                <h4>Chia sẻ khóa học:</h4>
+                                <div class="share-buttons">
+                                    <a href="#" class="share-btn facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href="#" class="share-btn twitter"><i class="fa-brands fa-twitter"></i></a>
+                                    <a href="#" class="share-btn linkedin"><i class="fa-brands fa-linkedin-in"></i></a>
+                                    <a href="#" class="share-btn copy-link"><i class="fa-solid fa-link"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>

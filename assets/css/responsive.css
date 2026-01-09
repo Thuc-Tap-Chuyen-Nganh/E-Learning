@@ -1,0 +1,215 @@
+/**
+ * ============================================
+ * RESPONSIVE & MOBILE-FIRST STYLES
+ * ============================================
+ * 
+ * Tập hợp tất cả media queries và responsive design
+ * để dễ quản lý breakpoints
+ */
+
+/* ==================== BREAKPOINTS ==================== */
+/* 
+ * xs: < 576px (phones)
+ * sm: 576px - 767px (small tablets)
+ * md: 768px - 991px (tablets)
+ * lg: 992px - 1199px (desktops)
+ * xl: >= 1200px (large desktops)
+ */
+
+/* ==================== MOBILE-FIRST BASE (Default: Mobile) ==================== */
+@media (max-width: 767px) {
+    /* Sidebar - Hide on mobile */
+    .sidebar {
+        display: none !important;
+    }
+    
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+    
+    /* Grid adjustments */
+    .stat-cards-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .dashboard-grid-2-col {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Table becomes scrollable */
+    .data-table {
+        font-size: 13px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 10px !important;
+    }
+    
+    /* Form layout */
+    .form-group-small {
+        max-width: 100% !important;
+    }
+    
+    /* Button layout */
+    .btn {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+    }
+    
+    /* Header adjustments */
+    .table-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+    }
+    
+    .table-controls {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+    
+    .search-box {
+        width: 100% !important;
+    }
+    
+    /* Modal */
+    .modal-content {
+        width: 95% !important;
+    }
+    
+    /* Navigation */
+    .navbar {
+        gap: 20px !important;
+    }
+    
+    .nav-links {
+        gap: 15px !important;
+    }
+    
+    /* Hamburger show */
+    .hamburger-icon {
+        display: block !important;
+    }
+}
+
+/* ==================== TABLET (768px - 991px) ==================== */
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Reduce sidebar width on tablet */
+    .sidebar {
+        width: 220px !important;
+    }
+    
+    .main-wrapper {
+        margin-left: 220px !important;
+    }
+    
+    /* 2-column grid instead of 3 */
+    .stat-cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Responsive table */
+    .data-table th,
+    .data-table td {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+    
+    /* Header adjustments */
+    .table-controls {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+}
+
+/* ==================== DESKTOP (992px - 1199px) ==================== */
+@media (min-width: 992px) and (max-width: 1199px) {
+    /* Slight adjustments */
+    .stat-cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+/* ==================== LARGE DESKTOP (1200px+) ==================== */
+@media (min-width: 1200px) {
+    /* Default: 3 columns for stat cards */
+    .stat-cards-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    /* 2-column layout for dashboard */
+    .charts-grid {
+        grid-template-columns: 2fr 1fr !important;
+    }
+    
+    .dashboard-grid-2-col {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+    /* Hide interactive elements when printing */
+    .sidebar,
+    .main-header,
+    .btn,
+    .btn-icon,
+    .modal-overlay,
+    .hamburger-icon {
+        display: none !important;
+    }
+    
+    /* Adjust layout for print */
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+    
+    /* Optimize table for printing */
+    .data-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .data-table th,
+    .data-table td {
+        border: 1px solid #333;
+        padding: 8px;
+    }
+}
+
+/* ==================== DARK MODE (Optional) ==================== */
+@media (prefers-color-scheme: dark) {
+    /* Add dark mode styles here if needed */
+    :root {
+        --dark-text: #f0f0f0;
+        --text-dark: #e0e0e0;
+        --white: #1a1a1a;
+        --background-grey: #2a2a2a;
+        --border-color: #444;
+    }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations for users who prefer reduced motion */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

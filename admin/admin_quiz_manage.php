@@ -43,6 +43,7 @@ $questions = $stmt_questions->get_result();
     <link rel="icon" href="../favicon.ico">
     
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
     
     <style>
         /* Quiz Specific Styles */

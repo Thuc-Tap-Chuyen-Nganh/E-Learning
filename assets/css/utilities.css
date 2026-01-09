@@ -1,0 +1,414 @@
+/**
+ * ============================================
+ * UTILITIES & COMMON COMPONENTS CSS
+ * ============================================
+ * 
+ * Chứa tất cả các class dùng chung toàn dự án
+ * như buttons, forms, tables, modals, badges, v.v.
+ */
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--dark-text);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: var(--background-grey);
+    color: var(--light-text);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+    color: var(--dark-text);
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.btn-outline-white {
+    border: 2px solid var(--white);
+    color: var(--white);
+    background: transparent;
+}
+
+.btn-outline-white:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-white {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--grey-text);
+    padding: 5px;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.btn-icon.btn-edit:hover {
+    color: var(--primary-blue);
+}
+
+.btn-icon.btn-delete:hover {
+    color: var(--delete-red);
+}
+
+/* ==================== FORMS ==================== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark-text);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+    font-family: var(--font-family);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--background-grey);
+    transition: all var(--transition-normal);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="number"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    background: var(--white);
+    box-shadow: 0 0 0 3px var(--primary-light-blue);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group-small {
+    max-width: 250px;
+}
+
+/* Ẩn mũi tên input number */
+.form-group input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.form-group input[type="number"]::-webkit-outer-spin-button,
+.form-group input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Select wrapper */
+.select-wrapper {
+    position: relative;
+}
+
+.form-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 40px;
+}
+
+.select-wrapper::after {
+    content: '\f078';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--grey-text);
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* ==================== TABLES ==================== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-text);
+    text-transform: uppercase;
+}
+
+.data-table td {
+    font-weight: 500;
+    color: var(--light-text);
+}
+
+.data-table td:first-child {
+    color: var(--dark-text);
+    font-weight: 600;
+}
+
+/* ==================== STATUS BADGES ==================== */
+.status {
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-active,
+.status.status-active {
+    background: var(--status-green-bg);
+    color: var(--status-green-text);
+}
+
+.status-inactive,
+.status.status-inactive {
+    background: var(--status-grey-bg);
+    color: var(--status-grey-text);
+}
+
+.status-draft,
+.status.status-draft {
+    background: var(--status-yellow-bg);
+    color: var(--status-yellow-text);
+}
+
+.badge {
+    background: var(--delete-red);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+}
+
+.badge-danger {
+    background: var(--delete-red);
+}
+
+.badge-beginner {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-intermediate {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-advanced {
+    background: #fce7f3;
+    color: #9d174d;
+}
+
+.tag {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+}
+
+.tag-green {
+    background: var(--status-green-bg);
+    color: var(--status-green-text);
+}
+
+.tag-yellow {
+    background: var(--status-yellow-bg);
+    color: var(--status-yellow-text);
+}
+
+/* ==================== MODALS ==================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: var(--radius-md);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: var(--shadow-xl);
+    transform: scale(0.9);
+    transition: transform var(--transition-fast);
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.modal-content p {
+    margin-bottom: 24px;
+    max-width: 350px;
+    overflow-wrap: break-word;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* ==================== AVATARS ==================== */
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary-light-blue);
+    color: var(--primary-blue);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.avatar-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar.avatar-m {
+    background: #f2e6ff;
+    color: #6f42c1;
+}
+
+.avatar.avatar-l {
+    background: #e6f7ec;
+    color: #198754;
+}
+
+.avatar.avatar-n {
+    background: #e6f2ff;
+    color: #007bff;
+}
+
+.avatar.avatar-a {
+    background: #fff8e1;
+    color: #ffa000;
+}
+
+/* ==================== CARDS ==================== */
+.card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==================== MISC ==================== */
+.no-scroll {
+    overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--grey-text);
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

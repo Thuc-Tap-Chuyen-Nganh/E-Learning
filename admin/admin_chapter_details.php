@@ -59,6 +59,7 @@ $result_lessons = $stmt_lessons->get_result();
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
 </head>
 <body>
 
@@ -348,6 +349,7 @@ $result_lessons = $stmt_lessons->get_result();
 
     <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
     <script src="js/admin_lessons.js?v=<?php echo filemtime('js/admin_lessons.js'); ?>"></script>
+    <script src="js/responsive.js?v=<?php echo filemtime('js/responsive.js'); ?>"></script>
 
 </body>
 </html>

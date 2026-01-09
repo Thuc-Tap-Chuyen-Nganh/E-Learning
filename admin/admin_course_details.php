@@ -82,6 +82,7 @@ $total_duration_formatted = format_duration($total_minutes);
     <link rel="icon" href="../favicon.ico">
     
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
 </head>
 <body>
 
@@ -291,6 +292,7 @@ $total_duration_formatted = format_duration($total_minutes);
     </div>
 
     <script src="js/admin_chapters.js?v=<?php echo filemtime('js/admin_chapters.js'); ?>"></script>
+    <script src="js/responsive.js?v=<?php echo filemtime('js/responsive.js'); ?>"></script>
 
 </body>
 </html>

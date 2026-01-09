@@ -73,6 +73,7 @@ function format_status($status) {
     <link rel="icon" href="../favicon.ico">
 
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= filemtime('css/admin_styles.css') ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
 </head>
 <body>
 
@@ -142,6 +143,7 @@ function format_status($status) {
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>Hình ảnh</th>
                             <th>Tên khóa học</th>
                             <th>Giá</th>
                             <th>Danh mục</th>
@@ -156,6 +158,15 @@ function format_status($status) {
                             while($row = $courses_result->fetch_assoc()) {
                         ?>
                                 <tr>
+                                    <td>
+                                        <?php
+                                            if (!empty($row['thumbnail']) && file_exists(BASE_PATH . $row['thumbnail'])) {
+                                                echo '<img src="' . BASE_URL . htmlspecialchars($row['thumbnail']) . '" alt="' . htmlspecialchars($row['title']) . '" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">';
+                                            } else {
+                                                echo '<span style="color: #999; font-size: 12px;">Chưa có ảnh</span>';
+                                            }
+                                        ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($row['title']); ?></td>
                                     <td><?php echo number_format($row['price'], 0, ',', '.'); ?>₫</td>
                                     <td><?php echo htmlspecialchars($row['category']); ?></td>
@@ -178,7 +189,7 @@ function format_status($status) {
                             }
                         } else {
                             // Nếu không có khóa học nào
-                            echo '<tr><td colspan="5" style="text-align: center;">Chưa có khóa học nào.</td></tr>';
+                            echo '<tr><td colspan="6" style="text-align: center;">Chưa có khóa học nào.</td></tr>';
                         }
                         ?>
                     </tbody>
@@ -197,7 +208,9 @@ function format_status($status) {
             </div>
         </div>
     </div>
+    <script src="../assets/js/modal.js?v=<?php echo time(); ?>"></script>
     <script src="js/admin_courses.js?v=<?php echo filemtime('js/admin_courses.js'); ?>"></script>
+    <script src="js/responsive.js?v=<?php echo filemtime('js/responsive.js'); ?>"></script>
 </body>
 </html>
 

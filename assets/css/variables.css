@@ -1,0 +1,82 @@
+/**
+ * ============================================
+ * GLOBAL CSS VARIABLES (Dùng chung toàn dự án)
+ * ============================================
+ * 
+ * Tập hợp tất cả các biến CSS được sử dụng trong cả admin và frontend
+ * Để tránh trùng lặp và dễ dàng thay đổi theme toàn cục
+ */
+
+:root {
+    /* ==================== COLORS ==================== */
+    /* Primary Colors */
+    --primary-color: #8e2de2;
+    --primary-blue: #007bff;
+    --primary-light-blue: #f0f4ff;
+    --primary-gradient: linear-gradient(90deg, #8e2de2 0%, #4a00e0 40%, #0099f7 100%);
+    --primary-light: #E6E6FA;
+    
+    /* Text Colors */
+    --dark-text: #111;
+    --text-dark: #333;
+    --text-light: #555;
+    --light-text: #555;
+    --grey-text: #888;
+    --dark-blue: #0F0A28;
+    
+    /* Background Colors */
+    --white: #ffffff;
+    --background-grey: #f8f9fa;
+    --section-bg-light: #f8f9fa;
+    --background-light: #f8f9fa;
+    
+    /* Border Colors */
+    --border-color: #e9ecef;
+    --border-light: #f0f0f0;
+    
+    /* Status Colors */
+    --status-green-bg: #e6f7ec;
+    --status-green-text: #198754;
+    --status-grey-bg: #f8f9fa;
+    --status-grey-text: #6c757d;
+    --status-yellow-bg: #fff8e1;
+    --status-yellow-text: #ffa000;
+    --status-red-bg: #ffe6e6;
+    --delete-red: #dc3545;
+    
+    /* ==================== TYPOGRAPHY ==================== */
+    --font-family: 'Inter', sans-serif;
+    
+    /* ==================== SPACING ==================== */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 25px;
+    --spacing-3xl: 30px;
+    
+    /* ==================== BORDER RADIUS ==================== */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 50px;
+    
+    /* ==================== SHADOWS ==================== */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --shadow-xl: 0 5px 15px rgba(0,0,0,0.3);
+    
+    /* ==================== TRANSITIONS ==================== */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* ==================== Z-INDEX ==================== */
+    --z-sticky: 1000;
+    --z-fixed: 1001;
+    --z-modal: 1000;
+    --z-dropdown: 900;
+}

@@ -89,6 +89,7 @@ $res_top = $conn->query($sql_top);
     <link rel="icon" href="../favicon.ico">
     
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= time() ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -253,6 +254,7 @@ $res_top = $conn->query($sql_top);
             }
         });
     </script>
+    <script src="js/responsive.js?v=<?= time() ?>"></script>
 
 </body>
 </html>

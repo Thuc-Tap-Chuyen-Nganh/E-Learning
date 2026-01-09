@@ -16,6 +16,7 @@ require_once '../config/config.php';
     <link rel="icon" href="../favicon.ico">
 
     <link rel="stylesheet" href="css/index.css?v=<?= filemtime('css/index.css') ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
 </head>
 <body>
 
@@ -51,7 +52,7 @@ require_once '../config/config.php';
         </form>
         
     </div>
-
+    <script src="js/responsive.js?v=<?= filemtime('js/responsive.js') ?>"></script>
 </body>
 </html>
 

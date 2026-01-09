@@ -97,6 +97,7 @@ while($row = $res_top->fetch_assoc()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" href="../favicon.ico">
     <link rel="stylesheet" href="css/admin_styles.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/responsive.css?v=<?= filemtime('css/responsive.css') ?>">
     
     <style>
         /* Tinh chỉnh riêng cho layout biểu đồ */
@@ -321,6 +322,7 @@ while($row = $res_top->fetch_assoc()) {
             }
         });
     </script>
+    <script src="js/responsive.js?v=<?php echo filemtime('js/responsive.js'); ?>"></script>
 
 </body>
 </html>
